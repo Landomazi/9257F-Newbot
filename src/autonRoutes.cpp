@@ -5,145 +5,115 @@
 
 using namespace vex;
 
-void autonomousSkills(void)
+void AutonomousSkills(void)
 {
   TopIntake.setVelocity(100, percent);
   BottomIntake.setVelocity(100, percent);
   //step 1:
-  drivestraight(63, 50);
+  DriveStraight(63, 50);
   wait(.1, seconds);
   Turn(-90, 100);
   //step 2:
-  intakeSpin(100, forward);
-  drivestraight(14, 20);
-  drivestraight(15, 10);
+  IntakeSpin(100, forward);
+  DriveStraight(14, 20);
+  DriveStraight(15, 10);
   wait(1, seconds);
-  drivestraight(-6.7, 40);
-  drivestraight(8, 10);
+  DriveStraight(-6.7, 40);
+  DriveStraight(8, 10);
   wait( 1, seconds);
-  drivestraight(-7, 40);
-  drivestraight(7, 10);
+  DriveStraight(-7, 40);
+  DriveStraight(7, 10);
   wait( 1, seconds);
   //step 3:
-  drivestraight(-20, 15);
+  DriveStraight(-20, 15);
   Turn(88, 50);
-  drivestraight(25, 30);
+  DriveStraight(25, 30);
   //step 4:
   wait(1.5, seconds);
-  drivestraight(20, 15);
-  intakeSpin(100, reverse);
+  DriveStraight(20, 15);
+  IntakeSpin(100, reverse);
   wait(1.5, seconds);
   //step 5:
-  drivestraight(-15, 15);
+  DriveStraight(-15, 15);
   wait(0.5, seconds);
   wait(1, seconds);
   //step 6:
   Turn(177, 100);
-  drivestraight(187, 50);
+  DriveStraight(187, 50);
   wait(.1, seconds);
   //step 7:
   Turn(-90, 100);
-  intakeSpin(100, forward);
-  drivestraight(48, 30);
+  IntakeSpin(100, forward);
+  DriveStraight(48, 30);
   //step 8:
   wait(.5, seconds);
-  drivestraight(-5, 30);
-  drivestraight(4.7, 30);
+  DriveStraight(-5, 30);
+  DriveStraight(4.7, 30);
   wait( 1, seconds);
-  drivestraight(-5, 30);
-  drivestraight(4.7, 30);
+  DriveStraight(-5, 30);
+  DriveStraight(4.7, 30);
   wait( 1, seconds);
   //step 9:
-  drivestraight(-20, 15);
+  DriveStraight(-20, 15);
   Turn(89, 50);
-  drivestraight(25, 30);
+  DriveStraight(25, 30);
   //step 10:
   wait(1.5, seconds);
-  drivestraight(20, 15);
-  intakeSpin(100, reverse);
+  DriveStraight(20, 15);
+  IntakeSpin(100, reverse);
   //step 11:
   wait(1.5, seconds);
-  drivestraight(-25, 15);
+  DriveStraight(-25, 15);
   wait(0.5, seconds);
   //step 12:
   wait(1, seconds);
   Turn(0, 50);
-  drivestraight(90, 50);
+  DriveStraight(90, 50);
   Turn(-90, 50);
   //step 13:
   wait(1, seconds);
-  drivestraight(65, 80);
+  DriveStraight(65, 80);
 }
 
  
 
-void winpoint()
-
+void AWPoint()
 {
 
 }
 
  
 
-void autonomousRight(void)
+void AutonomousRight(void)
 {
-
-  //step 1:
-  drivestraight(60, 50);
+  DriveStraight(23, 50);
   wait(.1, seconds);
-  Turn(90, 100);
-
-  //step 2:
-  intakeSpin(100, forward);
-  drivestraight(27, 30);
-  drivestraight(-5, 30);
-  drivestraight(4.7, 30);
-  drivestraight(-5, 30);
-  drivestraight(4.7, 30);
-  
-  //step 3:
-  drivestraight(-20, 15);
-  Turn(-87, 50);
-  drivestraight(25, 30);
-  
-  //step 4:
-
-  wait(1, seconds);
-  drivestraight(20, 15);
-  intakeSpin(100, reverse);
-  wait(1.5, seconds);
-  
-  //step 5:
-  drivestraight(-15, 15);
-  wait(0.5, seconds);
-  wait(1, seconds);
+  Turn(30, 50);
+  BottomIntake.spin(reverse);
+  DriveStraight(20, 8);
+  wait(.4, seconds);
+  DriveStraight(20, 8);
+  Turn(135, 50);
+  DriveStraight(63, 50);
+  Turn(0, 50);
+  DriveStraight(20, 50);
+  IntakeSpin(100, reverse);
 }
 
  
 
-void autonomousLeft(void)
+void AutonomousLeft(void)
 {
-  //step 1:
-  drivestraight(64, 50);
+  DriveStraight(23, 50);
   wait(.1, seconds);
-  Turn(-90, 100);
-  //step 2:
-  intakeSpin(100, forward);
-  drivestraight(27, 30);
-  drivestraight(-5, 30);
-  drivestraight(4.7, 30);
-  wait( .5, seconds);
-  //step 3:
-  drivestraight(-20, 15);
-  Turn(89, 50);
-  drivestraight(25, 30);
-  //step 4:
-  wait(1.5, seconds);
-  drivestraight(20, 15);
-  intakeSpin(100, reverse);
-  wait(1.5, seconds);
-  //step 5:
-  drivestraight(-15, 15);
-  wait(0.5, seconds);
-  wait(1, seconds);
+  Turn(-30, 50);
+  BottomIntake.spin(reverse);
+  DriveStraight(20, 8);
+  wait(.4, seconds);
+  DriveStraight(20, 8);
+  Turn(-135, 50);
+  DriveStraight(63, 50);
+  Turn(0, 50);
+  DriveStraight(20, 50);
+  IntakeSpin(100, reverse);
 }

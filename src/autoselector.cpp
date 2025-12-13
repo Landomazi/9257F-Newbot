@@ -9,16 +9,16 @@
 #include "vex.h"
 #include "configure.h"
 
-enum Side { left_side, right_side };
+enum Side { LeftSide, RightSide };
 enum AutonMode { NORMAL, SKILLS };
-enum WinPoint { NOWINPOINT, WINPOINT };
+enum AWP { NoWinPoint, WinPoint };
 
-Side selectedSide;
-AutonMode selectedAutonMode;
-WinPoint selectedWinPoint;
+Side SelectedSide;
+AutonMode SelectedAutonMode;
+AWP SelectedWinPoint;
 
 // Function to wait for user touch selection
-int waitForPress() {
+int WaitForPress() {
     while (!BigBrain.Screen.pressing()) {
         vex::task::sleep(20);
     }
@@ -30,7 +30,7 @@ int waitForPress() {
     return x << 16 | y; // encode x and y into one int
 }
 
-void displaySkillsMenu() {
+void DisplaySkillsMenu() {
     BigBrain.Screen.clearScreen();
     BigBrain.Screen.setFont(vex::fontType::mono30);
     BigBrain.Screen.setPenColor(vex::white);
@@ -44,7 +44,7 @@ void displaySkillsMenu() {
     BigBrain.Screen.printAt(250, 160, "No Skills");
 }
 
-void displayWinPointMenu() {
+void DisplayWinPointMenu() {
     BigBrain.Screen.clearScreen();
     BigBrain.Screen.setFont(vex::fontType::mono30);
     BigBrain.Screen.setPenColor(vex::white);
@@ -58,7 +58,7 @@ void displayWinPointMenu() {
     BigBrain.Screen.printAt(255, 160, "Win Point");
 }
 
-void displaySideMenu() {
+void DisplaySideMenu() {
     BigBrain.Screen.clearScreen();
     BigBrain.Screen.setFont(vex::fontType::mono30);
     BigBrain.Screen.setPenColor(vex::white);
@@ -72,79 +72,57 @@ void displaySideMenu() {
     BigBrain.Screen.printAt(255, 160, "Right Side");
 }
 
-void displaySelection() {
+void DisplaySelection() {
     BigBrain.Screen.clearScreen();
     BigBrain.Screen.setFont(vex::fontType::mono30);
     BigBrain.Screen.setPenColor(vex::white);
 
-    if (selectedAutonMode == SKILLS) {
+    if (SelectedAutonMode == SKILLS) {
         BigBrain.Screen.printAt(40, 100, "Running Skills Autonomous");
     } else {
         BigBrain.Screen.printAt(40, 100, "Running Normal Autonomous");
 
-        if (selectedWinPoint == WINPOINT) {
+        if (SelectedWinPoint == WinPoint) {
             BigBrain.Screen.printAt(40, 140, "With Win Point");
         }
 
-        if (selectedWinPoint != WINPOINT) {
-            BigBrain.Screen.printAt(40, 180,
-                (selectedSide == left_side) ? "Left Side" : "Right Side");
-        }
     }
 }
 
-void autonSelectionFlow() {
-    displaySkillsMenu();
+void AutonSelectionFlow() {
+    DisplaySkillsMenu();
     bool skillChosen = false;
     while (!skillChosen) {
-        int xy = waitForPress();
+        int xy = WaitForPress();
         int x = xy >> 16;
         int y = xy & 0xFFFF;
 
         if (x >= 40 && x <= 190 && y >= 80 && y <= 230) { // Skills
-            selectedAutonMode = SKILLS;
+            SelectedAutonMode = SKILLS;
             skillChosen = true;
         } else if (x >= 230 && x <= 380 && y >= 80 && y <= 230) { // No Skills
-            selectedAutonMode = NORMAL;
+            SelectedAutonMode = NORMAL;
             skillChosen = true;
         }
     }
 
-    if (selectedAutonMode == NORMAL) {
-        displayWinPointMenu();
+    if (SelectedAutonMode == NORMAL) {
+        DisplayWinPointMenu();
         bool winChosen = false;
         while (!winChosen) {
-            int xy = waitForPress();
+            int xy = WaitForPress();
             int x = xy >> 16;
             int y = xy & 0xFFFF;
 
             if (x >= 40 && x <= 190 && y >= 80 && y <= 230) { // No Win Point
-                selectedWinPoint = NOWINPOINT;
+                SelectedWinPoint = NoWinPoint;
                 winChosen = true;
             } else if (x >= 230 && x <= 380 && y >= 80 && y <= 230) { // Win Point
-                selectedWinPoint = WINPOINT;
+                SelectedWinPoint = WinPoint;
                 winChosen = true;
             }
         }
     }
 
-    if (selectedAutonMode == NORMAL && selectedWinPoint != WINPOINT) {
-        displaySideMenu();
-        bool sideChosen = false;
-        while (!sideChosen) {
-            int xy = waitForPress();
-            int x = xy >> 16;
-            int y = xy & 0xFFFF;
-
-            if (x >= 40 && x <= 190 && y >= 80 && y <= 230) { // Left Side
-                selectedSide = left_side;
-                sideChosen = true;
-            } else if (x >= 230 && x <= 380 && y >= 80 && y <= 230) { // Right Side
-                selectedSide = right_side;
-                sideChosen = true;
-            }
-        }
-    }
-
-    displaySelection();
+    DisplaySelection();
 }

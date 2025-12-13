@@ -1,4 +1,4 @@
-double botfacing();
+double BotFacing();
 void Turn(double targetAngle, double maxSpeed);
-void drivestraight(double distance, double speed);
-void intakeSpin(double speed, vex::directionType dir);
+void DriveStraight(double distance, double speed);
+void IntakeSpin(double speed, vex::directionType dir);

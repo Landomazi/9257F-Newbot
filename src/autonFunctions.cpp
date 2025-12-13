@@ -1,16 +1,16 @@
 #include "vex.h"
 #include "configure.h"
 
-double botfacing(){
+double BotFacing(){
   double sum = 0;
   int count = 0;
 
-  if (inertialsensor1.installed()) {
-    sum += inertialsensor1.rotation();
+  if (InertialSensor1.installed()) {
+    sum += InertialSensor1.rotation();
     count++;
   }
-  if (inertialsensor2.installed()) {
-    sum += inertialsensor2.rotation();
+  if (InertialSensor2.installed()) {
+    sum += InertialSensor2.rotation();
     count++;
   }
   if (InertialSensor3.installed()) {
@@ -42,7 +42,7 @@ void Turn(double targetAngle, double maxSpeed) {
 
 
   while (true) { //everything in this loop we constaly be running and calculating
-    double currentAngle = botfacing(); //sets cuurent angle to be equivent to botfacing
+    double currentAngle = BotFacing(); //sets cuurent angle to be equivent to botfacing
     error = targetAngle - currentAngle; // calculates how far it needs to turn to get closer to the angle
 
     // makes sure that it always travels the shortes distance; instead of 350deg it travels 10deg
@@ -66,8 +66,8 @@ void Turn(double targetAngle, double maxSpeed) {
     if (turnSpeed > maxSpeed) turnSpeed = maxSpeed; //these two lines limit speed to hundred percent which isn't 
     if (turnSpeed < -maxSpeed) turnSpeed = -maxSpeed;//necesary but if we ever lower max speed it will be necesary
 
-    leftMotors.spin(vex::forward, turnSpeed, vex::percent);// these two lines and the two above it help with speed and which 
-    rightMotors.spin(vex::forward, -turnSpeed, vex::percent);// direction the motors spin
+    LeftMotors.spin(vex::forward, turnSpeed, vex::percent);// these two lines and the two above it help with speed and which 
+    RightMotors.spin(vex::forward, -turnSpeed, vex::percent);// direction the motors spin
 
     prevError = error; //when the loop gets down here it sets the previous error to the error and then resets
     //the error after movement recalculates
@@ -80,18 +80,18 @@ void Turn(double targetAngle, double maxSpeed) {
   }
 
   // when the turn is completed and error equals 0 with no problems then the turn ends and motors stop
-  leftMotors.stop(vex::brake);
-  rightMotors.stop(vex::brake);
+  LeftMotors.stop(vex::brake);
+  RightMotors.stop(vex::brake);
 }
 
-void drivestraight(double distance, double speed){
-  leftMotors.resetPosition();
-  rightMotors.resetPosition();
-  drivetrain1.setDriveVelocity(speed, vex::percent);
-  drivetrain1.driveFor(distance, vex::inches);
+void DriveStraight(double distance, double speed){
+  LeftMotors.resetPosition();
+  RightMotors.resetPosition();
+  Drivetrain1.setDriveVelocity(speed, vex::percent);
+  Drivetrain1.driveFor(distance, vex::inches);
 }
 
-void intakeSpin(double speed, vex::directionType dir){
+void IntakeSpin(double speed, vex::directionType dir){
   TopIntake.setVelocity(speed, vex::percent);
   BottomIntake.setVelocity(speed, vex::percent);
   TopIntake.spin(dir);

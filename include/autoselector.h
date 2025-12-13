@@ -1,13 +1,13 @@
-enum Side { left_SIDE, right_SIDE };
-enum AutonMode { NORMAL, SKILLS };
-enum WinPoint { NOWINPOINT, WINPOINT };
+enum Side { LeftSide, RightSide };
+enum AutonMode { Normal, Skills };
+enum AWP { NoWinPoint, WinPoint };
 
-extern Side selectedSide;
-extern AutonMode selectedAutonMode;
-extern WinPoint selectedWinPoint;
-void waitForSelection(int xMin, int xMax, int yMin, int yMax, void (*onSelect)());
-void displaySkillsMenu();
-void displaySideMenu();
-void displayWinPointMenu();
-void displayFinalSelection();
-void autonSelectionFlow();
+extern Side SelectedSide;
+extern AutonMode SelectedAutonMode;
+extern AWP SelectedWinPoint;
+void WaitForSelection(int xMin, int xMax, int yMin, int yMax, void (*onSelect)());
+void DisplaySkillsMenu();
+void DisplaySideMenu();
+void DisplayWinPointMenu();
+void DisplayFinalSelection();
+void AutonSelectionFlow();

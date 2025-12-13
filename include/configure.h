@@ -1,37 +1,40 @@
-extern vex::competition Competition;
+#include "vex.h"
+using namespace vex;
 
-extern vex::brain BigBrain;
+// Competition and brain
+extern competition Competition;
+extern brain BigBrain;
 
-//controllers
-extern vex::controller controller1;
-extern vex::controller controller2;
+// Controllers
+extern controller Controller1;
+extern controller Controller2;
 
-//sensors
-extern vex::inertial inertialsensor1;
-extern vex::inertial inertialsensor2;
-extern vex::inertial InertialSensor3;
-extern vex::inertial InertialSensor4;
+// Inertial sensors
+extern inertial InertialSensor1;
+extern inertial InertialSensor2;
+extern inertial InertialSensor3;
+extern inertial InertialSensor4;
 
-// Intake motor
-extern vex::motor_group intake;
-extern vex::motor TopIntake;
-extern vex::motor BottomIntake;
-//lift motor
-extern vex::motor liftmotor1;
-extern vex::motor liftmotor2;
-extern vex::motor_group liftmotor;
+// Pneumatics
+extern pneumatics goalPiston;
+extern pneumatics lilWill;
+
+// Intake motors
+extern motor TopIntake;
+extern motor BottomIntake;
+extern motor_group Intake;
 
 // Right motors
-extern vex::motor motor_right_front;
-extern vex::motor motor_right_mid;
-extern vex::motor motor_right_back;
-extern vex::motor_group rightMotors;
+extern motor RightFront;
+extern motor RightMid;
+extern motor RightBack;
+extern motor_group RightMotors;
 
 // Left motors
-extern vex::motor motor_left_front;
-extern vex::motor motor_left_mid;
-extern vex::motor motor_left_back;
-extern vex::motor_group leftMotors;
+extern motor LeftFront;
+extern motor LeftMid;
+extern motor LeftBack;
+extern motor_group LeftMotors;
 
-// Drivetrain setup for autonomous code
-extern vex::drivetrain drivetrain1;
+// Drivetrain for auton
+extern drivetrain Drivetrain1;

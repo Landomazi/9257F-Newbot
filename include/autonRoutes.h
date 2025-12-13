@@ -1,4 +1,4 @@
-void autonomousSkills();
-void winpoint();
-void autonomousRight();
-void autonomousLeft();
+void AutonomousSkills();
+void AWPoint();
+void AutonomousRight();
+void AutonomousLeft();
