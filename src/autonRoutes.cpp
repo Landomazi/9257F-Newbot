@@ -7,7 +7,7 @@ using namespace vex;
 
 void AutonomousSkills(void)
 {
-  TopIntake.setVelocity(100, percent);
+  /*TopIntake.setVelocity(100, percent);
   BottomIntake.setVelocity(100, percent);
   //step 1:
   DriveStraight(63, 50);
@@ -72,7 +72,10 @@ void AutonomousSkills(void)
   Turn(-90, 50);
   //step 13:
   wait(1, seconds);
-  DriveStraight(65, 80);
+  DriveStraight(65, 80);*/
+  TopIntake.spin(fwd);
+  wait(2, seconds);
+  TopIntake.stop();
 }
 
  
@@ -94,9 +97,10 @@ void AutonomousRight(void)
   wait(.4, seconds);
   DriveStraight(20, 8);
   Turn(135, 50);
-  DriveStraight(63, 50);
+  DriveStraight(67, 50);
+  Intake.stop();
   Turn(0, 50);
-  DriveStraight(20, 50);
+  DriveStraight(21, 50);
   IntakeSpin(100, reverse);
 }
 
@@ -112,8 +116,9 @@ void AutonomousLeft(void)
   wait(.4, seconds);
   DriveStraight(20, 8);
   Turn(-135, 50);
-  DriveStraight(63, 50);
+  DriveStraight(68, 50);
+  Intake.stop();
   Turn(0, 50);
-  DriveStraight(20, 50);
+  DriveStraight(21, 50);
   IntakeSpin(100, reverse);
 }

@@ -82,8 +82,10 @@ void DisplaySelection() {
     } else {
         BigBrain.Screen.printAt(40, 100, "Running Normal Autonomous");
 
-        if (SelectedWinPoint == WinPoint) {
-            BigBrain.Screen.printAt(40, 140, "With Win Point");
+        if (SelectedSide == LeftSide) {
+            BigBrain.Screen.printAt(40, 140, "Left Side");
+        } else{
+            BigBrain.Screen.printAt(40, 140, "right Side");
         }
 
     }
@@ -120,6 +122,23 @@ void AutonSelectionFlow() {
             } else if (x >= 230 && x <= 380 && y >= 80 && y <= 230) { // Win Point
                 SelectedWinPoint = WinPoint;
                 winChosen = true;
+            }
+        }
+    }
+    if (SelectedAutonMode == NORMAL) {
+        DisplaySideMenu();
+        bool sideChosen = false;
+        while (!sideChosen) {
+            int xy = WaitForPress();
+            int x = xy >> 16;
+            int y = xy & 0xFFFF;
+
+            if (x >= 40 && x <= 190 && y >= 80 && y <= 230) {
+                SelectedSide = LeftSide;
+                sideChosen = true;
+            } else if (x >= 230 && x <= 380 && y >= 80 && y <= 230) {
+                SelectedSide = RightSide;
+                sideChosen = true;
             }
         }
     }

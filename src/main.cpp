@@ -28,12 +28,8 @@ void PreAuton(void) {
   RightMotors.resetPosition();
   InertialSensor1.calibrate();
   InertialSensor2.calibrate();
-  InertialSensor3.calibrate();
-  InertialSensor4.calibrate();
   InertialSensor1.resetHeading();
   InertialSensor2.resetHeading();
-  InertialSensor3.resetHeading();
-  InertialSensor4.resetHeading();
   TopIntake.resetPosition();
   BottomIntake.resetPosition();
   TopIntake.setVelocity(100, vex::percent);
@@ -114,15 +110,19 @@ void UserControlDebug() {
     bool mogoMechPosition = false;
     bool LilWillEngaged = false;
     bool LilWillPosition = false;
+    bool HoldPosition = false;
+    bool HoldEngaged = false;
+    bool MiddlePosision = false;
+    bool MiddleEngaged = false;
 
     while(true) {
-        // --- Controller Axes ---
+        // Controller Axes
         double L3 = Controller1.Axis3.position(); // left stick vertical
         double R3 = Controller1.Axis2.position(); // right stick vertical
         double L4 = Controller1.Axis4.position(); // left stick horizontal
         double R4 = Controller1.Axis1.position(); // right stick horizontal
 
-        // --- Buttons ---
+        // Buttons
         bool R1 = Controller1.ButtonR1.pressing();
         bool R2 = Controller1.ButtonR2.pressing();
         bool L1 = Controller1.ButtonL1.pressing();
@@ -131,6 +131,10 @@ void UserControlDebug() {
         bool Down = Controller1.ButtonDown.pressing();
         bool Left = Controller1.ButtonLeft.pressing();
         bool Right = Controller1.ButtonRight.pressing();
+        bool A = Controller1.ButtonA.pressing();
+        bool B = Controller1.ButtonB.pressing();
+        bool X = Controller1.ButtonX.pressing();
+        bool Y = Controller1.ButtonY.pressing();
 
         // --- Motor commands ---
         double leftPower = L3;
@@ -141,23 +145,33 @@ void UserControlDebug() {
         RightMotors.spin(forward, rightPower, percent);
 
         // Intake motors
-        if(R2) {
-            TopIntake.spin(forward);
-            BottomIntake.spin(forward);
-        } else if(R1) {
-            TopIntake.spin(reverse);
-            BottomIntake.spin(reverse);
+        if(R1) {
+          TopIntake.spin(reverse);
+          BottomIntake.spin(reverse);
+          Double1.set(true);
+          Double2.set(false);
+        } else if(R2) {
+          TopIntake.spin(forward);
+          BottomIntake.spin(forward);
         } else if(L1) {
-            BottomIntake.spin(reverse);
+          BottomIntake.spin(reverse);
+          TopIntake.spin(reverse);
+          Double1.set(false);
+          Double2.set(false);
+        } else if(L2){
+          TopIntake.spin(forward);
+          BottomIntake.spin(forward);
+          Double1.set(true);
+          Double2.set(true);
         } else {
-            TopIntake.stop();
-            BottomIntake.stop();
+          TopIntake.stop();
+          BottomIntake.stop();
         }
 
-        // Mogo mechanism
+        // pistons for match loader and descore
         if( Right && !mogoMechEngaged) {
             mogoMechPosition = !mogoMechPosition;
-            goalPiston.set(mogoMechPosition);
+            Descore.set(mogoMechPosition);
         }
         mogoMechEngaged = Right;
 
@@ -166,8 +180,6 @@ void UserControlDebug() {
           lilWill.set(LilWillPosition);
         }
         LilWillEngaged = Down;
-
-
 
         // --- Print debug info to Brain ---
         BigBrain.Screen.clearScreen();
@@ -182,9 +194,7 @@ void UserControlDebug() {
         BigBrain.Screen.newLine();
         BigBrain.Screen.print("LilWIll engaged:%d  position:%d", LilWillEngaged, LilWillPosition);
         BigBrain.Screen.newLine();
-        BigBrain.Screen.print("headings position1:%d  position2:%d", InertialSensor1.heading(), InertialSensor2.heading());
-        BigBrain.Screen.newLine();
-        BigBrain.Screen.print("headings position3:%d  position4:%d", InertialSensor3.heading(), InertialSensor4.heading());
+        BigBrain.Screen.print("headings position1:%d  position2:%d", InertialSensor1.angle(), InertialSensor2.angle());
         BigBrain.Screen.newLine();
         BigBrain.Screen.print("absoloute heading:%d ", BotFacing());
         wait(50, msec); // update every 50ms

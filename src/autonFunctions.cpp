@@ -6,22 +6,13 @@ double BotFacing(){
   int count = 0;
 
   if (InertialSensor1.installed()) {
-    sum += InertialSensor1.rotation();
+    sum += InertialSensor1.heading();
     count++;
   }
   if (InertialSensor2.installed()) {
-    sum += InertialSensor2.rotation();
+    sum += InertialSensor2.heading();
     count++;
   }
-  if (InertialSensor3.installed()) {
-    sum += InertialSensor3.rotation();
-    count++;
-  }
-  if (InertialSensor4.installed()) {
-    sum += InertialSensor4.rotation();
-    count++;
-  }
-  
   return sum / count;
 }
 
