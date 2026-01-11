@@ -13,11 +13,10 @@ extern controller Controller2;
 extern inertial InertialSensor1;
 extern inertial InertialSensor2;
 
-
 // Pneumatics
-extern pneumatics Descore;
+extern pneumatics goalPiston;
 extern pneumatics lilWill;
-extern pneumatics Double1;
+extern pneumatics IMPdouble;
 extern pneumatics Double2;
 
 // Intake motors

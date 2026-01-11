@@ -1,6 +1,15 @@
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*    Module:       autonRoutes.cpp                                           */
+/*    Author:       Landon.kiely                                              */
+/*    Description:  V5 project                                                */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
 #include "vex.h"
 #include "configure.h"
 #include "autonFunctions.h"
+#include "turnPid.h"
 
 
 using namespace vex;
@@ -73,52 +82,54 @@ void AutonomousSkills(void)
   //step 13:
   wait(1, seconds);
   DriveStraight(65, 80);*/
-  TopIntake.spin(fwd);
+  Intake.spin(fwd);
   wait(2, seconds);
-  TopIntake.stop();
+  Intake.stop();
 }
 
  
 
 void AWPoint()
 {
-
+DriveStraight(2,10);
 }
 
  
 
 void AutonomousRight(void)
 {
-  DriveStraight(23, 50);
-  wait(.1, seconds);
-  Turn(30, 50);
-  BottomIntake.spin(reverse);
-  DriveStraight(20, 8);
-  wait(.4, seconds);
-  DriveStraight(20, 8);
-  Turn(135, 50);
-  DriveStraight(67, 50);
-  Intake.stop();
-  Turn(0, 50);
-  DriveStraight(21, 50);
-  IntakeSpin(100, reverse);
+  Intake.setVelocity(75, percent);
+  DriveStraight(18, 20);
+  Turn(32, 50);
+  Intake.spin(forward);
+  wait(0.5, seconds);
+  DriveStraight(20, 20);
+  Turn(135, 30);
+  DriveStraight(60, 20);
+  Turn(-180, 30);
+  Intake.stop(hold);
+  DriveStraight(-38, 20);
+  IMPdouble.set(true);
+  wait(1, seconds);
+  Intake.setVelocity(100, percent);
+  Intake.spin(forward);
 }
-
- 
 
 void AutonomousLeft(void)
 {
-  DriveStraight(23, 50);
-  wait(.1, seconds);
-  Turn(-30, 50);
-  BottomIntake.spin(reverse);
-  DriveStraight(20, 8);
-  wait(.4, seconds);
-  DriveStraight(20, 8);
-  Turn(-135, 50);
-  DriveStraight(68, 50);
-  Intake.stop();
-  Turn(0, 50);
-  DriveStraight(21, 50);
-  IntakeSpin(100, reverse);
+  Intake.setVelocity(75, percent);
+  DriveStraight(18, 20);
+  Turn(-32, 50);
+  Intake.spin(forward);
+  wait(0.5, seconds);
+  DriveStraight(20, 20);
+  Turn(-135, 30);
+  DriveStraight(60, 20);
+  Turn(180, 30);
+  Intake.stop(hold);
+  DriveStraight(-35, 20);
+  IMPdouble.set(true);
+  wait(1, seconds);
+  Intake.setVelocity(100, percent);
+  Intake.spin(forward);
 }

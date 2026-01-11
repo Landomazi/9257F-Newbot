@@ -6,13 +6,14 @@ double BotFacing(){
   int count = 0;
 
   if (InertialSensor1.installed()) {
-    sum += InertialSensor1.heading();
+    sum += InertialSensor1.rotation();
     count++;
   }
   if (InertialSensor2.installed()) {
-    sum += InertialSensor2.heading();
+    sum += InertialSensor2.rotation();
     count++;
   }
+  
   return sum / count;
 }
 
@@ -73,18 +74,4 @@ void Turn(double targetAngle, double maxSpeed) {
   // when the turn is completed and error equals 0 with no problems then the turn ends and motors stop
   LeftMotors.stop(vex::brake);
   RightMotors.stop(vex::brake);
-}
-
-void DriveStraight(double distance, double speed){
-  LeftMotors.resetPosition();
-  RightMotors.resetPosition();
-  Drivetrain1.setDriveVelocity(speed, vex::percent);
-  Drivetrain1.driveFor(distance, vex::inches);
-}
-
-void IntakeSpin(double speed, vex::directionType dir){
-  TopIntake.setVelocity(speed, vex::percent);
-  BottomIntake.setVelocity(speed, vex::percent);
-  TopIntake.spin(dir);
-  BottomIntake.spin(dir);
 }

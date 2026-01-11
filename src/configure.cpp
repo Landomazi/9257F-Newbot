@@ -12,15 +12,16 @@ controller Controller2 = controller(partner);
 inertial InertialSensor1 = inertial(PORT4);
 inertial InertialSensor2 = inertial(PORT7);
 
+
 // Pneumatics
-pneumatics Descore = pneumatics(BigBrain.ThreeWirePort.A);
-pneumatics lilWill = pneumatics(BigBrain.ThreeWirePort.B);
-pneumatics Double1 = pneumatics(BigBrain.ThreeWirePort.C);
-pneumatics Double2 = pneumatics(BigBrain.ThreeWirePort.D);
+pneumatics goalPiston = pneumatics(BigBrain.ThreeWirePort.H);
+pneumatics lilWill = pneumatics(BigBrain.ThreeWirePort.F);
+pneumatics IMPdouble = pneumatics(BigBrain.ThreeWirePort.B);
+pneumatics Double2 = pneumatics(BigBrain.ThreeWirePort.A);
 
 // Intake motors
-motor TopIntake = motor(PORT6, ratio18_1, false);
-motor BottomIntake = motor(PORT5, ratio18_1, true);
+motor TopIntake = motor(PORT5, ratio18_1, false);
+motor BottomIntake = motor(PORT6, ratio18_1, true);
 motor_group Intake = motor_group(TopIntake, BottomIntake);
 
 // Right motors

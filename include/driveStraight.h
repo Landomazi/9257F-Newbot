@@ -1,0 +1,1 @@
+void DriveStraight(double distance, double speed);

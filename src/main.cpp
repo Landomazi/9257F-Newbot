@@ -11,7 +11,7 @@
 #include "configure.h"
 #include "autoselector.h"
 #include "autonRoutes.h"
-#include "autonFunctions.h"
+#include "driveStraight.h"
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -56,6 +56,7 @@ void Autonomous() {
   } else if (SelectedSide == LeftSide) {
     AutonomousLeft();
   }
+ AutonomousSkills();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -68,40 +69,6 @@ void Autonomous() {
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
-/*void UserControl() {
-  TopIntake.setVelocity(100, vex::percent);
-  BottomIntake.setVelocity(100, vex::percent);
-  bool mogoMechEngaged = false;
-  bool mogoMechPosition = false;
-
-  while (1) {
-   double LeftPower = Controller1.Axis3.position(vex::percent);
-   double RightPower = Controller1.Axis2.position(vex::percent);
-   LeftMotors.spin(vex::fwd, LeftPower, vex::percent);
-   RightMotors.spin(vex::fwd, RightPower, vex::percent);
-  
-    if (Controller1.ButtonR2.pressing()){
-      TopIntake.spin(vex::fwd);
-      BottomIntake.spin(vex::fwd);
-    } else if (Controller1.ButtonR1.pressing()){
-      TopIntake.spin(vex::reverse);
-      BottomIntake.spin(vex::reverse);
-    } else if (Controller1.ButtonL1.pressing()){
-      BottomIntake.spin(vex::reverse);
-    } else {
-      TopIntake.stop();
-      BottomIntake.stop();
-    }
-
-      if (Controller1.ButtonL2.pressing()&&(mogoMechEngaged==false)){
-        mogoMechPosition = !mogoMechPosition;
-        goalPiston.set(mogoMechPosition);
-      }
-      mogoMechEngaged = Controller1.ButtonL2.pressing();
-
-    wait(20, vex::msec);
-  }
-}*/
 void UserControlDebug() {
     TopIntake.setVelocity(100, vex::percent);
     BottomIntake.setVelocity(100, vex::percent);
@@ -110,19 +77,15 @@ void UserControlDebug() {
     bool mogoMechPosition = false;
     bool LilWillEngaged = false;
     bool LilWillPosition = false;
-    bool HoldPosition = false;
-    bool HoldEngaged = false;
-    bool MiddlePosision = false;
-    bool MiddleEngaged = false;
 
     while(true) {
-        // Controller Axes
+        // --- Controller Axes ---
         double L3 = Controller1.Axis3.position(); // left stick vertical
         double R3 = Controller1.Axis2.position(); // right stick vertical
         double L4 = Controller1.Axis4.position(); // left stick horizontal
         double R4 = Controller1.Axis1.position(); // right stick horizontal
 
-        // Buttons
+        // --- Buttons ---
         bool R1 = Controller1.ButtonR1.pressing();
         bool R2 = Controller1.ButtonR2.pressing();
         bool L1 = Controller1.ButtonL1.pressing();
@@ -131,9 +94,6 @@ void UserControlDebug() {
         bool Down = Controller1.ButtonDown.pressing();
         bool Left = Controller1.ButtonLeft.pressing();
         bool Right = Controller1.ButtonRight.pressing();
-        bool A = Controller1.ButtonA.pressing();
-        bool B = Controller1.ButtonB.pressing();
-        bool X = Controller1.ButtonX.pressing();
         bool Y = Controller1.ButtonY.pressing();
 
         // --- Motor commands ---
@@ -145,41 +105,36 @@ void UserControlDebug() {
         RightMotors.spin(forward, rightPower, percent);
 
         // Intake motors
-        if(R1) {
+        if(R2) {
           TopIntake.spin(reverse);
           BottomIntake.spin(reverse);
-          Double1.set(true);
-          Double2.set(false);
-        } else if(R2) {
-          TopIntake.spin(forward);
-          BottomIntake.spin(forward);
+        } else if(R1) {
+            TopIntake.spin(forward);
+            BottomIntake.spin(forward);
+            IMPdouble.set(false);
+            Double2.set(false);
         } else if(L1) {
-          BottomIntake.spin(reverse);
-          TopIntake.spin(reverse);
-          Double1.set(false);
-          Double2.set(false);
-        } else if(L2){
           TopIntake.spin(forward);
           BottomIntake.spin(forward);
-          Double1.set(true);
-          Double2.set(true);
+          IMPdouble.set(true);
+          Double2.set(false);
         } else {
-          TopIntake.stop();
-          BottomIntake.stop();
+            TopIntake.stop();
+            BottomIntake.stop();
         }
 
-        // pistons for match loader and descore
-        if( Right && !mogoMechEngaged) {
+        // descore  mechanism
+        if( Y && !mogoMechEngaged) {
             mogoMechPosition = !mogoMechPosition;
-            Descore.set(mogoMechPosition);
+            goalPiston.set(mogoMechPosition);
         }
-        mogoMechEngaged = Right;
+        mogoMechEngaged = Y;
 
-        if( Down && !LilWillEngaged) {
+        if( Right && !LilWillEngaged) {
           LilWillPosition = !LilWillPosition;
           lilWill.set(LilWillPosition);
         }
-        LilWillEngaged = Down;
+        LilWillEngaged = Right;
 
         // --- Print debug info to Brain ---
         BigBrain.Screen.clearScreen();
@@ -194,14 +149,10 @@ void UserControlDebug() {
         BigBrain.Screen.newLine();
         BigBrain.Screen.print("LilWIll engaged:%d  position:%d", LilWillEngaged, LilWillPosition);
         BigBrain.Screen.newLine();
-        BigBrain.Screen.print("headings position1:%d  position2:%d", InertialSensor1.angle(), InertialSensor2.angle());
-        BigBrain.Screen.newLine();
-        BigBrain.Screen.print("absoloute heading:%d ", BotFacing());
+        BigBrain.Screen.print("headings position1:%d  position2:%d", InertialSensor1.heading(), InertialSensor2.heading());
         wait(50, msec); // update every 50ms
     }
 }
-
-
 
 int main() {
   AutonSelectionFlow();
