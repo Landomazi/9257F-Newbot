@@ -12,6 +12,7 @@
 #include "autoselector.h"
 #include "autonRoutes.h"
 #include "driveStraight.h"
+#include "InertialHeading.h"
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */

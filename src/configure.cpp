@@ -12,6 +12,9 @@ controller Controller2 = controller(partner);
 inertial InertialSensor1 = inertial(PORT4);
 inertial InertialSensor2 = inertial(PORT7);
 
+//Odometray tracking wheels
+rotation Xpod = rotation(PORT21);
+rotation Ypod = rotation(PORT12);
 
 // Pneumatics
 pneumatics goalPiston = pneumatics(BigBrain.ThreeWirePort.H);

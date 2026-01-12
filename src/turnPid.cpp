@@ -1,21 +1,6 @@
 #include "vex.h"
 #include "configure.h"
-
-double BotFacing(){
-  double sum = 0;
-  int count = 0;
-
-  if (InertialSensor1.installed()) {
-    sum += InertialSensor1.rotation();
-    count++;
-  }
-  if (InertialSensor2.installed()) {
-    sum += InertialSensor2.rotation();
-    count++;
-  }
-  
-  return sum / count;
-}
+#include "InertialHeading.h"
 
 //davin is stupid
 void Turn(double targetAngle, double maxSpeed) {

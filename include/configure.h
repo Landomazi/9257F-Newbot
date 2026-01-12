@@ -13,6 +13,10 @@ extern controller Controller2;
 extern inertial InertialSensor1;
 extern inertial InertialSensor2;
 
+// Odometray tracking wheels
+extern rotation Xpod;
+extern rotation Ypod;
+
 // Pneumatics
 extern pneumatics goalPiston;
 extern pneumatics lilWill;

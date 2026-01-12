@@ -8,8 +8,9 @@
 
 #include "vex.h"
 #include "configure.h"
-#include "autonFunctions.h"
+#include "driveStraight.h"
 #include "turnPid.h"
+#include "OdomFunctions.h"
 
 
 using namespace vex;
