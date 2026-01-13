@@ -1,5 +1,5 @@
 #include "vex.h"
-#include "configure.h"
+#include "Configure.h"
 
 void DriveStraight(double inches, double maxSpeed) {
     double kP = 2.2;

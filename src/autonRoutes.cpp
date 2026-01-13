@@ -7,11 +7,10 @@
 /*----------------------------------------------------------------------------*/
 
 #include "vex.h"
-#include "configure.h"
-#include "driveStraight.h"
-#include "turnPid.h"
+#include "Configure.h"
+#include "DriveStraight.h"
+#include "TurnPid.h"
 #include "OdomFunctions.h"
-
 
 using namespace vex;
 

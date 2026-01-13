@@ -7,10 +7,10 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "vex.h"
-#include "configure.h"
+#include "Configure.h"
 
 enum Side { LeftSide, RightSide };
-enum AutonMode { NORMAL, SKILLS };
+enum AutonMode { Normal, Skills };
 enum AWP { NoWinPoint, WinPoint };
 
 Side SelectedSide;
@@ -77,7 +77,7 @@ void DisplaySelection() {
     BigBrain.Screen.setFont(vex::fontType::mono30);
     BigBrain.Screen.setPenColor(vex::white);
 
-    if (SelectedAutonMode == SKILLS) {
+    if (SelectedAutonMode == Skills) {
         BigBrain.Screen.printAt(40, 100, "Running Skills Autonomous");
     } else {
         BigBrain.Screen.printAt(40, 100, "Running Normal Autonomous");
@@ -100,15 +100,15 @@ void AutonSelectionFlow() {
         int y = xy & 0xFFFF;
 
         if (x >= 40 && x <= 190 && y >= 80 && y <= 230) { // Skills
-            SelectedAutonMode = SKILLS;
+            SelectedAutonMode = Skills;
             skillChosen = true;
         } else if (x >= 230 && x <= 380 && y >= 80 && y <= 230) { // No Skills
-            SelectedAutonMode = NORMAL;
+            SelectedAutonMode = Normal;
             skillChosen = true;
         }
     }
 
-    if (SelectedAutonMode == NORMAL) {
+    if (SelectedAutonMode == Normal) {
         DisplayWinPointMenu();
         bool winChosen = false;
         while (!winChosen) {

@@ -1,4 +1,4 @@
-#include "configure.h"
+#include "Configure.h"
 
 // Competition and brain
 competition Competition;

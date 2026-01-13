@@ -1,5 +1,5 @@
 #include "vex.h"
-#include "configure.h"
+#include "Configure.h"
 #include "InertialHeading.h"
 
 //davin is stupid
@@ -16,7 +16,6 @@ void Turn(double targetAngle, double maxSpeed) {
 
   vex::timer t;
   t.reset();   
-
 
   while (true) { //everything in this loop we constaly be running and calculating
     double currentAngle = BotFacing(); //sets cuurent angle to be equivent to botfacing

@@ -1,5 +1,5 @@
 #include "vex.h"
-#include "configure.h"
+#include "Configure.h"
 #include "InertialHeading.h"
 
 // ================================

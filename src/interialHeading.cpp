@@ -1,4 +1,4 @@
-#include "configure.h"
+#include "Configure.h"
 
 double BotFacing() {
   double sum = 0;

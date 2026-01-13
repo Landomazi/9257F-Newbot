@@ -1,6 +1,16 @@
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*    Module:       OdomAutonFunc.cpp                                         */
+/*    Author:       Landon.kiely                                              */
+/*    Created:      11/19/2025, 7:35:43 AM                                    */
+/*    Description:  V5 project                                                */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+
 #include "vex.h"
-#include "configure.h"
-#include "odomTracking.h"
+#include "Configure.h"
+#include "OdomTracking.h"
 #include "InertialHeading.h"
 
 // creates a function to use multiple points in auton

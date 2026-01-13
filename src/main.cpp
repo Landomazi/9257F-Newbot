@@ -8,10 +8,10 @@
 /*----------------------------------------------------------------------------*/
 
 #include "vex.h"
-#include "configure.h"
-#include "autoselector.h"
-#include "autonRoutes.h"
-#include "driveStraight.h"
+#include "Configure.h"
+#include "Autoselector.h"
+#include "AutonRoutes.h"
+#include "DriveStraight.h"
 #include "InertialHeading.h"
 
 /*---------------------------------------------------------------------------*/
@@ -57,7 +57,6 @@ void Autonomous() {
   } else if (SelectedSide == LeftSide) {
     AutonomousLeft();
   }
- AutonomousSkills();
 }
 
 /*---------------------------------------------------------------------------*/
