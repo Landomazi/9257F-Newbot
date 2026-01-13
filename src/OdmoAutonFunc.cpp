@@ -3,30 +3,24 @@
 #include "odomTracking.h"
 #include "InertialHeading.h"
 
-// ======================================
-// ODOM MOVEMENT FUNCTIONS
-// Uses odomTracking.cpp values
-// ======================================
-
+// creates a function to use multiple points in auton
 struct Waypoint {
   double x;
   double y;
 };
 
 // Simple clamp
-
+// gives a max value to limit speed
 double Clamp(double value, double maxVal) {
   if (value > maxVal) return maxVal;
   if (value < -maxVal) return -maxVal;
   return value;
 }
 
-// ======================================
-// Curved drive to a single point (forward)
-// No stop to turn
-// ======================================
-
-void DriveToPointCurved(double targetX, double targetY, double maxSpeed = 70) {
+//Drive to a point with a curved path to avoid big turns
+// this just goes to a point by adjusting motor speeds based on distance and angle to target
+// won't end at any specific heading
+void DriveToPointCurved(double targetX, double targetY, double maxSpeed) {
   double kP_drive = 2.2;
   double kP_turn = 3.0;
 
@@ -58,12 +52,9 @@ void DriveToPointCurved(double targetX, double targetY, double maxSpeed = 70) {
   LeftMotors.stop(vex::brakeType::brake);
   RightMotors.stop(vex::brakeType::brake);
 }   
+// samething but moves backwards
 
-// ======================================
-// Curved drive to a single point (backward)
-// ======================================
-
-void DriveToPointCurvedBackwards(double targetX, double targetY, double maxSpeed = 70) {
+void DriveToPointCurvedBackwards(double targetX, double targetY, double maxSpeed) {
   double kP_drive = 2.2;
   double kP_turn = 3.0;
 
@@ -100,10 +91,50 @@ void DriveToPointCurvedBackwards(double targetX, double targetY, double maxSpeed
 }
 
 // ======================================
+// Drive to a point while maintaining a specific heading (forward)
+// ======================================
+
+//This function drives to a point while while ending at a point at a specific heading
+
+void DriveToPointAtHeading(double targetX, double targetY, double targetHeading, double maxSpeed) {
+  double kP_drive = 2.2;
+  double kP_turn = 3.0;
+
+  while (true) {
+    double dx = targetX - GetX();
+    double dy = targetY - GetY();
+
+    double distanceError = sqrt(dx * dx + dy * dy);
+    if (distanceError < 0.75) break;
+
+    double headingError = targetHeading - GetHeading();
+    while (headingError > 180) headingError -= 360;
+    while (headingError < -180) headingError += 360;
+
+    double drivePower = Clamp(distanceError * kP_drive, maxSpeed);
+    double turnPower = Clamp(headingError * kP_turn, maxSpeed);
+
+    double leftPower = drivePower + turnPower;
+    double rightPower = drivePower - turnPower;
+
+    leftPower = Clamp(leftPower, maxSpeed);
+    rightPower = Clamp(rightPower, maxSpeed);
+
+    LeftMotors.spin(vex::directionType::fwd, leftPower, vex::percentUnits::pct);
+    RightMotors.spin(vex::directionType::fwd, rightPower, vex::percentUnits::pct);
+
+    vex::task::sleep(20);
+  }
+
+  LeftMotors.stop(vex::brakeType::brake);
+  RightMotors.stop(vex::brakeType::brake);
+}
+
+// ======================================
 // Drive through multiple waypoints
 // ======================================
 
-void DrivePath(Waypoint path[], int count, double maxSpeed = 70) {
+void DrivePath(Waypoint path[], int count, double maxSpeed) {
   for (int i = 0; i < count; i++) {
     DriveToPointCurved(path[i].x, path[i].y, maxSpeed);
   }
@@ -117,4 +148,4 @@ void DrivePath(Waypoint path[], int count, double maxSpeed = 70) {
 //   {24, 36},
 //   {48, 48}
 // };
-// DrivePath(path, 3);
+// DrivePath(path, 3, 70);
