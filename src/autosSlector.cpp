@@ -76,6 +76,7 @@ void DisplaySelection() {
     BigBrain.Screen.clearScreen();
     BigBrain.Screen.setFont(vex::fontType::mono30);
     BigBrain.Screen.setPenColor(vex::white);
+    BigBrain.Screen.setFillColor(vex::black);
 
     if (SelectedAutonMode == Skills) {
         BigBrain.Screen.printAt(40, 100, "Running Skills Autonomous");

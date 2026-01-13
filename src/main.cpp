@@ -73,8 +73,8 @@ void UserControlDebug() {
     TopIntake.setVelocity(100, vex::percent);
     BottomIntake.setVelocity(100, vex::percent);
 
-    bool mogoMechEngaged = false;
-    bool mogoMechPosition = false;
+    bool MogoMechEngaged = false;
+    bool MogoMechPosition = false;
     bool LilWillEngaged = false;
     bool LilWillPosition = false;
 
@@ -97,12 +97,12 @@ void UserControlDebug() {
         bool Y = Controller1.ButtonY.pressing();
 
         // --- Motor commands ---
-        double leftPower = L3;
-        double rightPower = R3;
+        double LeftPower = L3;
+        double RightPower = R3;
 
         // Drive motors
-        LeftMotors.spin(forward, leftPower, percent);
-        RightMotors.spin(forward, rightPower, percent);
+        LeftMotors.spin(forward, LeftPower, percent);
+        RightMotors.spin(forward, RightPower, percent);
 
         // Intake motors
         if(R2) {
@@ -124,11 +124,11 @@ void UserControlDebug() {
         }
 
         // descore  mechanism
-        if( Y && !mogoMechEngaged) {
-            mogoMechPosition = !mogoMechPosition;
-            goalPiston.set(mogoMechPosition);
+        if( Y && !MogoMechEngaged) {
+            MogoMechPosition = !MogoMechPosition;
+            goalPiston.set(MogoMechPosition);
         }
-        mogoMechEngaged = Y;
+        MogoMechEngaged = Y;
 
         if( Right && !LilWillEngaged) {
           LilWillPosition = !LilWillPosition;
@@ -139,13 +139,13 @@ void UserControlDebug() {
         // --- Print debug info to Brain ---
         BigBrain.Screen.clearScreen();
         BigBrain.Screen.setCursor(1,1);
-        BigBrain.Screen.print("Drive L: %.1f  R: %.1f", leftPower, rightPower);
+        BigBrain.Screen.print("Drive L: %.1f  R: %.1f", LeftPower, RightPower);
         BigBrain.Screen.newLine();
         BigBrain.Screen.print("Intake R1:%d R2:%d L1:%d", R1, R2, L1);
         BigBrain.Screen.newLine();
         BigBrain.Screen.print(" L3:bumbers%.1f R3:%.1f L4:%.1f R4:%.1f", L3, R3, L4, R4);
         BigBrain.Screen.newLine();
-        BigBrain.Screen.print("Mogo engaged:%d  position:%d", mogoMechEngaged, mogoMechPosition);
+        BigBrain.Screen.print("Mogo engaged:%d  position:%d", MogoMechEngaged, MogoMechPosition);
         BigBrain.Screen.newLine();
         BigBrain.Screen.print("LilWIll engaged:%d  position:%d", LilWillEngaged, LilWillPosition);
         BigBrain.Screen.newLine();
