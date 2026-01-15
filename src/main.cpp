@@ -48,7 +48,7 @@ void PreAuton(void) {
 /*---------------------------------------------------------------------------*/
 
 void Autonomous() {
-  if (SelectedAutonMode == Skills) {
+  /*if (SelectedAutonMode == Skills) {
     AutonomousSkills();
   } else if (SelectedWinPoint == WinPoint) {
     AWPoint();
@@ -56,7 +56,8 @@ void Autonomous() {
     AutonomousRight();
   } else if (SelectedSide == LeftSide) {
     AutonomousLeft();
-  }
+  }*/
+  AWPoint();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -155,7 +156,7 @@ void UserControlDebug() {
 }
 
 int main() {
-  AutonSelectionFlow();
+  //AutonSelectionFlow();
   PreAuton();
   Competition.autonomous(Autonomous);
   Competition.drivercontrol(UserControlDebug);

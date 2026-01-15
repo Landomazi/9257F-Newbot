@@ -2,47 +2,62 @@
 #include "Configure.h"
 
 void DriveStraight(double TargetMovement, double maxSpeed) {
-  double kP = 0.6;
-  double kI = 0.002;
-  double kD = 0.4;
-  double error;
+  double kP = 3.0;
+  double kI = 0.0;
+  double kD = 0.25;
+
+  double error = 0;
   double prevError = 0;
   double integral = 0;
-  double derivative; 
-  
+  double derivative = 0;
+
+  double wheelDiameter = 3.25;
+  double wheelCircumference = wheelDiameter * M_PI;
+
   LeftMotors.resetPosition();
   RightMotors.resetPosition();
-  
+
   vex::timer t;
-  t.reset();   
-  
+  t.reset();
+
   while (true) {
-    double CurrentPosition = (LeftMotors.position(degrees) + RightMotors.position(degrees))*3.25 / 2;
-    error = TargetMovement - CurrentPosition; 
-    
-    if (fabs(error) < 15)
+    double avgDegrees =
+      (LeftMotors.position(degrees) + RightMotors.position(degrees)) / 2.0;
+
+    double CurrentPosition =
+      (avgDegrees / 360.0) * wheelCircumference;
+
+    error = TargetMovement - CurrentPosition;
+
+    if (fabs(error) < 8)
       integral += error;
     else
       integral = 0;
+
     derivative = error - prevError;
-    
-    double MovementSpeed = (kP * error) + (kI * integral) + (kD * derivative);
-    
-    if (MovementSpeed > maxSpeed) MovementSpeed = maxSpeed;
-    if (MovementSpeed < -maxSpeed) MovementSpeed = -maxSpeed;
-    
-    LeftMotors.spin(vex::forward, MovementSpeed, vex::percent);
-    RightMotors.spin(vex::forward, MovementSpeed, vex::percent);
-    
+
+    double moveSpeed = (kP * error) + (kI * integral) + (kD * derivative);
+
+    if (moveSpeed > maxSpeed) moveSpeed = maxSpeed;
+    if (moveSpeed < -maxSpeed) moveSpeed = -maxSpeed;
+
+    // minimum power to overcome friction
+    if (fabs(moveSpeed) < 8 && fabs(error) > 1.5) {
+      moveSpeed = (moveSpeed > 0) ? 8 : -8;
+    }
+
+    LeftMotors.spin(vex::forward, moveSpeed, vex::percent);
+    RightMotors.spin(vex::forward, moveSpeed, vex::percent);
+
     prevError = error;
-    
-    if ((fabs(error) < 1 && fabs(derivative) < 0.5) || t.time(vex::sec) > 3) {
+
+    if (fabs(error) < 1.5 || t.time(vex::sec) > 3) {
       break;
     }
-  
+
     vex::wait(20, vex::msec);
   }
-  
+
   LeftMotors.stop(vex::brake);
   RightMotors.stop(vex::brake);
 }
