@@ -92,30 +92,28 @@ void AutonomousSkills(void)
 void AWPoint()
 {
   //drive to the tube and grab blocks
-  DriveStraight(38, 70);
+  DriveStraight(39, 100);
   Intake.spin(reverse);
   lilWill.set(true);
-  Turn(-90, 50);
+  Turn(-89.5, 70);
   DriveStraight(22, 30);
   wait(.5, seconds);
+  DriveStraight(1,40);
   DriveStraight(-40, 50);
-  //score blocks
-  lilWill.set(false);
   Double2.set(true);
   wait(2,seconds);
-  DriveStraight(0, 70);
-  Intake.stop();
   //go to mid blocks
-  DriveStraight(31, 70);
-  Turn(140, 50);
-   Double2.set(true);
-  Intake.spin(reverse);
-  DriveStraight(50, 30);
-  Turn(-45, 50);
-  DriveStraight(-20,70);
+  Double2.set(false);
+  DriveStraight(31, 100);
+  lilWill.set(false);
+  Turn(131, 70);
+  DriveStraight(40, 50);
+  lilWill.set(true);
+  DriveStraight(18,30);
+  Turn(-45, 70);
+  DriveStraight(-17,70);
   Double2.set(false);
   IMPdouble.set(true);
-
 }
 
  
@@ -167,7 +165,10 @@ void GeminiAuton(void){
 }
 
 void AIAuton(void){
-
+  DriveStraight(12,70);
 }
 
-//Prompt: Create me a autonoumous route using the Drivestraight function, turn function, Intake.spin and each piston with there respective names: LilWill for match loader, IMPDouble for blocker and high goal scoring, and IMPDOuble and DOuble 2 at the same time for middle goal. Everything works in inches or degrees or true and false. Also specify the starting location as when it starts it needs to be touching the park zone.
+//Prompt: Create me a autonoumous route using the Drivestraight function, turn function, Intake.spin and 
+//each piston with there respective names: LilWill for match loader, IMPDouble for blocker and high goal scoring, 
+//and IMPDOuble and DOuble 2 at the same time for middle goal. Everything works in inches or degrees or true and false. 
+//Also specify the starting location as when it starts it needs to be touching the park zone.

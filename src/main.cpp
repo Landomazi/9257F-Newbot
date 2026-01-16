@@ -110,15 +110,15 @@ void UserControlDebug() {
           TopIntake.spin(reverse);
           BottomIntake.spin(reverse);
         } else if(R1) {
-            TopIntake.spin(forward);
-            BottomIntake.spin(forward);
+            TopIntake.spin(reverse);
+            BottomIntake.spin(reverse);
             IMPdouble.set(false);
             Double2.set(false);
         } else if(L1) {
-          TopIntake.spin(forward);
-          BottomIntake.spin(forward);
-          IMPdouble.set(true);
-          Double2.set(false);
+          TopIntake.spin(reverse);
+          BottomIntake.spin(reverse);
+          IMPdouble.set(false);
+          Double2.set(true);
         } else {
             TopIntake.stop();
             BottomIntake.stop();
