@@ -1,42 +1,42 @@
-#include "Configure.h"
+#include "vex.h"
 
 // Competition and brain
-competition Competition;
-brain BigBrain;
+vex::competition Competition;
+vex::brain BigBrain;
 
 // Controllers
-controller Controller1 = controller(primary);
-controller Controller2 = controller(partner);
+vex::controller Controller1 = vex::controller(vex::primary);
+vex::controller Controller2 = vex::controller(vex::partner);
 
 // Inertial sensors
-inertial InertialSensor1 = inertial(PORT15);
-inertial InertialSensor2 = inertial(PORT16);
+vex::inertial InertialSensor1 = vex::inertial(vex::PORT15);
+vex::inertial InertialSensor2 = vex::inertial(vex::PORT16);
 
 //Odometray tracking wheel
-rotation Xpod = rotation(PORT1);
+vex::rotation Xpod = vex::rotation(vex::PORT1);
 
 // Pneumatics
-pneumatics goalPiston = pneumatics(BigBrain.ThreeWirePort.G);
-pneumatics lilWill = pneumatics(BigBrain.ThreeWirePort.C);
-pneumatics IMPdouble = pneumatics(BigBrain.ThreeWirePort.A);
-pneumatics Double2 = pneumatics(BigBrain.ThreeWirePort.E);
+vex::pneumatics goalPiston = vex::pneumatics(BigBrain.ThreeWirePort.G);
+vex::pneumatics lilWill = vex::pneumatics(BigBrain.ThreeWirePort.C);
+vex::pneumatics IMPdouble = vex::pneumatics(BigBrain.ThreeWirePort.A);
+vex::pneumatics Double2 = vex::pneumatics(BigBrain.ThreeWirePort.E);
 
 // Intake motors
-motor TopIntake = motor(PORT17, ratio18_1, false);
-motor BottomIntake = motor(PORT14, ratio18_1, true);
-motor_group Intake = motor_group(TopIntake, BottomIntake);
+vex::motor TopIntake = vex::motor(vex::PORT17, vex::ratio18_1, false);
+vex::motor BottomIntake = vex::motor(vex::PORT14, vex::ratio18_1, true);
+vex::motor_group Intake = vex::motor_group(TopIntake, BottomIntake);
 
 // Right motors
-motor RightFront = motor(PORT20, ratio6_1, false);
-motor RightMid = motor(PORT19, ratio6_1, false);
-motor RightBack = motor(PORT18, ratio6_1, false);
-motor_group RightMotors = motor_group(RightFront, RightMid, RightBack);
+vex::motor RightFront = vex::motor(vex::PORT20, vex::ratio6_1, false);
+vex::motor RightMid = vex::motor(vex::PORT19, vex::ratio6_1, false);
+vex::motor RightBack = vex::motor(vex::PORT18, vex::ratio6_1, false);
+vex::motor_group RightMotors = vex::motor_group(RightFront, RightMid, RightBack);
 
 // Left motors
-motor LeftFront = motor(PORT11, ratio6_1, true);
-motor LeftMid = motor(PORT12, ratio6_1, true);
-motor LeftBack = motor(PORT13, ratio6_1, true);
-motor_group LeftMotors = motor_group(LeftFront, LeftMid, LeftBack);
+vex::motor LeftFront = vex::motor(vex::PORT11, vex::ratio6_1, true);
+vex::motor LeftMid = vex::motor(vex::PORT12, vex::ratio6_1, true);
+vex::motor LeftBack = vex::motor(vex::PORT13, vex::ratio6_1, true);
+vex::motor_group LeftMotors = vex::motor_group(LeftFront, LeftMid, LeftBack);
 
 // Drivetrain setup
-drivetrain Drivetrain1 = drivetrain(LeftMotors, RightMotors, 304.8, 257.175, 259.338473, distanceUnits::mm);
+vex::drivetrain Drivetrain1 = vex::drivetrain(LeftMotors, RightMotors, 304.8, 257.175, 259.338473, vex::distanceUnits::mm);

@@ -1,8 +1,8 @@
 #include "vex.h"
 #include "Configure.h"
-#include "OdomTracking.h"
+#include "Auton/AutonFunc/Odom/OdomTracking.h"
 #include "InertialHeading.h"
-#include "AngWrap.h"
+#include "Auton/AutonFunc/Odom/AngWrap.h"
 #include <cmath>
 
 // helper functions
@@ -28,7 +28,7 @@ void TurnToPointOdom(double targetX, double targetY, double maxSpeed, int timeou
   vex::timer t;
   t.reset();
 
-  while (t.time(msec) < timeout) {
+  while (t.time(vex::msec) < timeout) {
     // make sure odom stays updated
     UpdateOdom();
 
@@ -55,13 +55,13 @@ void TurnToPointOdom(double targetX, double targetY, double maxSpeed, int timeou
     if (motorPower < -maxSpeed) motorPower = -maxSpeed;
 
     // apply turn
-    LeftMotors.spin(forward, motorPower, pct);
-    RightMotors.spin(forward, -motorPower, pct);
+    LeftMotors.spin(vex::forward, motorPower, vex::pct);
+    RightMotors.spin(vex::forward, -motorPower, vex::pct);
 
     vex::task::sleep(10);
   }
 
   // stop drivetrain
-  LeftMotors.stop(brake);
-  RightMotors.stop(brake);
+  LeftMotors.stop(vex::brake);
+  RightMotors.stop(vex::brake);
 }

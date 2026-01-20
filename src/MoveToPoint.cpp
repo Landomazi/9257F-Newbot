@@ -1,18 +1,10 @@
 #include "vex.h"
 #include "Configure.h"
 #include "InertialHeading.h"
-#include "AngWrap.h"
-#include "OdomTracking.h"
+#include "Auton/AutonFunc/Odom/AngWrap.h"
+#include "Auton/AutonFunc/Odom/OdomTracking.h"
 #include <cmath>
 #include <algorithm>
-
-inline double clamp(double val, double minVal, double maxVal) {
-    if (val < minVal) return minVal;
-    if (val > maxVal) return maxVal;
-    return val;
-}
-
-
 
 // Simple PID move to point using odom
 void MoveToPointOdom(double targetX, double targetY, double maxSpeed, int timeout) {
@@ -27,7 +19,7 @@ void MoveToPointOdom(double targetX, double targetY, double maxSpeed, int timeou
     vex::timer t;
     t.reset();
 
-    while (t.time(msec) < timeout) {
+    while (t.time(vex::msec) < timeout) {
         UpdateOdom();
 
         double deltaX = targetX - globalX;
@@ -50,18 +42,18 @@ void MoveToPointOdom(double targetX, double targetY, double maxSpeed, int timeou
         double rightPower = forwardPower - turnPower;
 
         // Normalize if over max
-        double ratio = std::max(fabs(leftPower), fabs(rightPower)) / maxSpeed;
+        double ratio = max(fabs(leftPower), fabs(rightPower)) / maxSpeed;
         if (ratio > 1.0) {
             leftPower /= ratio;
             rightPower /= ratio;
         }
 
-        LeftMotors.spin(forward, leftPower, pct);
-        RightMotors.spin(forward, rightPower, pct);
+        LeftMotors.spin(vex::forward, leftPower, vex::pct);
+        RightMotors.spin(vex::forward, rightPower, vex::pct);
 
         vex::task::sleep(10);
     }
 
-    LeftMotors.stop(brake);
-    RightMotors.stop(brake);
+    LeftMotors.stop(vex::brake);
+    RightMotors.stop(vex::brake);
 }

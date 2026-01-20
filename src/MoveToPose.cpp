@@ -1,13 +1,9 @@
 #include "vex.h"
 #include "Configure.h"
-#include "OdomTracking.h"
+#include "Auton/AutonFunc/Odom/OdomTracking.h"
 #include "InertialHeading.h"
-#include "AngWrap.h"
+#include "Auton/AutonFunc/Odom/AngWrap.h"
 #include <cmath>
-
-inline double max(double a, double b) {
-    return (a > b) ? a : b;
-}
 
 // Move to a target pose using odometry
 void MoveToPoseOdom(double targetX, double targetY, double targetTheta, double maxSpeed, int timeout) {
@@ -17,7 +13,7 @@ void MoveToPoseOdom(double targetX, double targetY, double targetTheta, double m
     vex::timer t;
     t.reset();
 
-    while(t.time(msec) < timeout) {
+    while(t.time(vex::msec) < timeout) {
         UpdateOdom(); // updates globalX, globalY, globalTheta
 
         // Distance and angle to target
@@ -54,12 +50,12 @@ void MoveToPoseOdom(double targetX, double targetY, double targetTheta, double m
             rightPower /= ratio;
         }
 
-        LeftMotors.spin(forward, leftPower, pct);
-        RightMotors.spin(forward, rightPower, pct);
+        LeftMotors.spin(vex::forward, leftPower, vex::pct);
+        RightMotors.spin(vex::forward, rightPower, vex::pct);
 
         vex::task::sleep(10);
     }
 
-    LeftMotors.stop(brake);
-    RightMotors.stop(brake);
+    LeftMotors.stop(vex::brake);
+    RightMotors.stop(vex::brake);
 }

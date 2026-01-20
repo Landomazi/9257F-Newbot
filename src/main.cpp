@@ -8,6 +8,9 @@
 /*----------------------------------------------------------------------------*/
 
 #include "vex.h"
+#include "Auton/AutoSelector.h"
+#include "Auton/AutonRoutes/ElimsAuto.h"
+#include "Auton/AutonRoutes/QualsAuto.h"
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -48,20 +51,21 @@ void Autonomous() {
     if (SelectedAutonMode == Skills) {
         AutonomousSkills();
     } else if (SelectedMatchType == Match) {
-        if (SelectedSide == LeftSide) {
+        if (SelectedAutoSide == LeftSide) {
           AutonomousLeft();
-        } else if (SelectedSide == RightSide) {
+        } else if (SelectedAutoSide == RightSide) {
             AutonomousRight();
-        } else if (SelectedSide == AWPoint) {
+        } else if (SelectedAutoSide == AWPoint) {
             AWP();
         }
     } else if (SelectedMatchType == Elims) {
-        if (SelectedElimsType == ELeft) {
+        if (SelectedElimsSide == ELeft) {
             ElimsLeft();
-        } else if (SelectedElimsType == ERight) {
+        } else if (SelectedElimsSide == ERight) {
           ElimsRight();
         }
     }
+
 }
 
 /*---------------------------------------------------------------------------*/
@@ -106,27 +110,27 @@ void UserControlDebug() {
         double RightPower = R3;
 
         // Drive motors
-        LeftMotors.spin(forward, LeftPower, percent);
-        RightMotors.spin(forward, RightPower, percent);
+        LeftMotors.spin(vex::forward, LeftPower, vex::percent);
+        RightMotors.spin(vex::forward, RightPower, vex::percent);
 
     // Intake motors
     if(R2) {
-      TopIntake.spin(forward);
-      BottomIntake.spin(forward);
+      TopIntake.spin(vex::forward);
+      BottomIntake.spin(vex::forward);
     } else if(R1) {
-      TopIntake.spin(reverse);
-      BottomIntake.spin(reverse);
+      TopIntake.spin(vex::reverse);
+      BottomIntake.spin(vex::reverse);
       IMPdouble.set(false);
       Double2.set(false);
     } else if(L1) {
-      TopIntake.spin(reverse);
-      BottomIntake.spin(reverse);
+      TopIntake.spin(vex::reverse);
+      BottomIntake.spin(vex::reverse);
       IMPdouble.set(false);
       Double2.set(true);
     }
     else if(L2) {
-      TopIntake.spin(reverse);
-      BottomIntake.spin(reverse);
+      TopIntake.spin(vex::reverse);
+      BottomIntake.spin(vex::reverse);
       IMPdouble.set(true);
       Double2.set(false);
     } else {
@@ -160,7 +164,7 @@ void UserControlDebug() {
     BigBrain.Screen.print("LilWIll engaged:%d  position:%d", LilWillEngaged, LilWillPosition);
     BigBrain.Screen.newLine();
     BigBrain.Screen.print("headings position1:%d  position2:%d", InertialSensor1.heading(), InertialSensor2.heading());
-    wait(50, msec); // update every 50ms
+    wait(50, vex::msec); // update every 50ms
   }
 }
 

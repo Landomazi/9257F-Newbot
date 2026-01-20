@@ -22,7 +22,7 @@ void DriveStraight(double TargetMovement, double maxSpeed) {
 
   while (true) {
     double avgDegrees =
-      (LeftMotors.position(degrees) + RightMotors.position(degrees)) / 2.0;
+      (LeftMotors.position(vex::degrees) + RightMotors.position(vex::degrees)) / 2.0;
 
     double CurrentPosition =
       (avgDegrees / 360.0) * wheelCircumference;

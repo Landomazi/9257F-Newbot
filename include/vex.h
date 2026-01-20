@@ -6,9 +6,7 @@
 #include "v5.h"
 #include "v5_vcs.h"
 #include "Configure.h"
-#include "AutoSelector.h"
-#include "ElimsAuto.h"
-#include "QualsAuto.h"
+
 
 
 

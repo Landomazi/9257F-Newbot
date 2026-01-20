@@ -1,7 +1,7 @@
 #include "vex.h"
 #include "Configure.h"
-#include "OdomTracking.h"
-#include "AngWrap.h"
+#include "Auton/AutonFunc/Odom/OdomTracking.h"
+#include "Auton/AutonFunc/Odom/AngWrap.h"
 #include <cmath>
 
 // PID turn to an absolute heading
@@ -18,7 +18,7 @@ void TurnToHeadingOdom(double targetTheta, double maxSpeed, int timeout) {
     vex::timer t;
     t.reset();
 
-    while (t.time(msec) < timeout) {
+    while (t.time(vex::msec) < timeout) {
         UpdateOdom();  // update globalX, globalY, globalTheta
 
         error = angleWrap(targetTheta - globalTheta);
@@ -35,13 +35,13 @@ void TurnToHeadingOdom(double targetTheta, double maxSpeed, int timeout) {
         if (motorPower > maxSpeed) motorPower = maxSpeed;
         if (motorPower < -maxSpeed) motorPower = -maxSpeed;
 
-        LeftMotors.spin(forward, motorPower, pct);
-        RightMotors.spin(forward, -motorPower, pct);
+        LeftMotors.spin(vex::forward, motorPower, vex::pct);
+        RightMotors.spin(vex::forward, -motorPower, vex::pct);
 
         vex::task::sleep(10);
     }
 
     // stop drivetrain
-    LeftMotors.stop(brake);
-    RightMotors.stop(brake);
+    LeftMotors.stop(vex::brake);
+    RightMotors.stop(vex::brake);
 }

@@ -8,8 +8,7 @@
 
 #include "vex.h"
 #include "Configure.h"
-
-void AutonomousSkills(void)
+void AutonomousSkills()
 {
 
 }
@@ -19,12 +18,12 @@ void AWP()
 
 }
 
-void AutonomousRight(void)
+void AutonomousRight()
 {
   
 }
 
-void AutonomousLeft(void)
+void AutonomousLeft()
 {
  
 }
