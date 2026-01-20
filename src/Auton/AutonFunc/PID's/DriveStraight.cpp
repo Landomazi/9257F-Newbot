@@ -2,9 +2,9 @@
 #include "Configure.h"
 
 void DriveStraight(double TargetMovement, double maxSpeed) {
-  double kP = 3.0;
-  double kI = 0.0;
-  double kD = 1.93;
+  double kP = 3;
+  double kI = 0.001;
+  double kD = 5;
 
   double error = 0;
   double prevError = 0;

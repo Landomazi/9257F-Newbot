@@ -1,3 +1,4 @@
+#pragma once
 #include "vex.h"
 using namespace vex;
 
@@ -15,7 +16,6 @@ extern inertial InertialSensor2;
 
 // Odometray tracking wheels
 extern rotation Xpod;
-extern rotation Ypod;
 
 // Pneumatics
 extern pneumatics goalPiston;

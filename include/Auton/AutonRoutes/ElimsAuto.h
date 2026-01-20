@@ -1,0 +1,3 @@
+
+void ElimsRight();
+void ElimsLeft();

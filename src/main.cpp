@@ -8,11 +8,6 @@
 /*----------------------------------------------------------------------------*/
 
 #include "vex.h"
-#include "Configure.h"
-#include "Autoselector.h"
-#include "AutonRoutes.h"
-#include "DriveStraight.h"
-#include "InertialHeading.h"
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -35,6 +30,7 @@ void PreAuton(void) {
   BottomIntake.resetPosition();
   TopIntake.setVelocity(100, vex::percent);
   BottomIntake.setVelocity(100, vex::percent);
+  AutonSelector();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -48,16 +44,24 @@ void PreAuton(void) {
 /*---------------------------------------------------------------------------*/
 
 void Autonomous() {
-  /*if (SelectedAutonMode == Skills) {
-    AutonomousSkills();
-  } else if (SelectedWinPoint == WinPoint) {
-    AWPoint();
-  } else if (SelectedSide == RightSide) {
-    AutonomousRight();
-  } else if (SelectedSide == LeftSide) {
-    AutonomousLeft();
-  }*/
-  AWPoint();
+    // Use the selected options to run the correct autonomous
+    if (SelectedAutonMode == Skills) {
+        AutonomousSkills();
+    } else if (SelectedMatchType == Match) {
+        if (SelectedSide == LeftSide) {
+          AutonomousLeft();
+        } else if (SelectedSide == RightSide) {
+            AutonomousRight();
+        } else if (SelectedSide == AWPoint) {
+            AWP();
+        }
+    } else if (SelectedMatchType == Elims) {
+        if (SelectedElimsType == ELeft) {
+            ElimsLeft();
+        } else if (SelectedElimsType == ERight) {
+          ElimsRight();
+        }
+    }
 }
 
 /*---------------------------------------------------------------------------*/
@@ -105,58 +109,62 @@ void UserControlDebug() {
         LeftMotors.spin(forward, LeftPower, percent);
         RightMotors.spin(forward, RightPower, percent);
 
-        // Intake motors
-        if(R2) {
-          TopIntake.spin(reverse);
-          BottomIntake.spin(reverse);
-        } else if(R1) {
-            TopIntake.spin(reverse);
-            BottomIntake.spin(reverse);
-            IMPdouble.set(false);
-            Double2.set(false);
-        } else if(L1) {
-          TopIntake.spin(reverse);
-          BottomIntake.spin(reverse);
-          IMPdouble.set(false);
-          Double2.set(true);
-        } else {
-            TopIntake.stop();
-            BottomIntake.stop();
-        }
-
-        // descore  mechanism
-        if( Y && !MogoMechEngaged) {
-            MogoMechPosition = !MogoMechPosition;
-            goalPiston.set(MogoMechPosition);
-        }
-        MogoMechEngaged = Y;
-
-        if( Right && !LilWillEngaged) {
-          LilWillPosition = !LilWillPosition;
-          lilWill.set(LilWillPosition);
-        }
-        LilWillEngaged = Right;
-
-        // --- Print debug info to Brain ---
-        BigBrain.Screen.clearScreen();
-        BigBrain.Screen.setCursor(1,1);
-        BigBrain.Screen.print("Drive L: %.1f  R: %.1f", LeftPower, RightPower);
-        BigBrain.Screen.newLine();
-        BigBrain.Screen.print("Intake R1:%d R2:%d L1:%d", R1, R2, L1);
-        BigBrain.Screen.newLine();
-        BigBrain.Screen.print(" L3:bumbers%.1f R3:%.1f L4:%.1f R4:%.1f", L3, R3, L4, R4);
-        BigBrain.Screen.newLine();
-        BigBrain.Screen.print("Mogo engaged:%d  position:%d", MogoMechEngaged, MogoMechPosition);
-        BigBrain.Screen.newLine();
-        BigBrain.Screen.print("LilWIll engaged:%d  position:%d", LilWillEngaged, LilWillPosition);
-        BigBrain.Screen.newLine();
-        BigBrain.Screen.print("headings position1:%d  position2:%d", InertialSensor1.heading(), InertialSensor2.heading());
-        wait(50, msec); // update every 50ms
+    // Intake motors
+    if(R2) {
+      TopIntake.spin(forward);
+      BottomIntake.spin(forward);
+    } else if(R1) {
+      TopIntake.spin(reverse);
+      BottomIntake.spin(reverse);
+      IMPdouble.set(false);
+      Double2.set(false);
+    } else if(L1) {
+      TopIntake.spin(reverse);
+      BottomIntake.spin(reverse);
+      IMPdouble.set(false);
+      Double2.set(true);
     }
+    else if(L2) {
+      TopIntake.spin(reverse);
+      BottomIntake.spin(reverse);
+      IMPdouble.set(true);
+      Double2.set(false);
+    } else {
+      TopIntake.stop();
+      BottomIntake.stop();
+    }
+
+    // descore  mechanism
+    if( Y && !MogoMechEngaged) {
+      MogoMechPosition = !MogoMechPosition;
+      goalPiston.set(MogoMechPosition);
+    }
+      MogoMechEngaged = Y;
+      if( Right && !LilWillEngaged) {
+      LilWillPosition = !LilWillPosition;
+      lilWill.set(LilWillPosition);
+    }
+    LilWillEngaged = Right;
+
+    // --- Print debug info to Brain ---
+    BigBrain.Screen.clearScreen();
+    BigBrain.Screen.setCursor(1,1);
+    BigBrain.Screen.print("Drive L: %.1f  R: %.1f", LeftPower, RightPower);
+    BigBrain.Screen.newLine();
+    BigBrain.Screen.print("Intake R1:%d R2:%d L1:%d", R1, R2, L1);
+    BigBrain.Screen.newLine();
+    BigBrain.Screen.print(" L3:bumbers%.1f R3:%.1f L4:%.1f R4:%.1f", L3, R3, L4, R4);
+    BigBrain.Screen.newLine();
+    BigBrain.Screen.print("Mogo engaged:%d  position:%d", MogoMechEngaged, MogoMechPosition);
+    BigBrain.Screen.newLine();
+    BigBrain.Screen.print("LilWIll engaged:%d  position:%d", LilWillEngaged, LilWillPosition);
+    BigBrain.Screen.newLine();
+    BigBrain.Screen.print("headings position1:%d  position2:%d", InertialSensor1.heading(), InertialSensor2.heading());
+    wait(50, msec); // update every 50ms
+  }
 }
 
 int main() {
-  //AutonSelectionFlow();
   PreAuton();
   Competition.autonomous(Autonomous);
   Competition.drivercontrol(UserControlDebug);
