@@ -1,8 +1,7 @@
 #include "vex.h"
 #include "Configure.h"
 #include "InertialHeading.h"
-#include "Auton/AutonFunc/Odom/AngWrap.h"
-#include "Auton/AutonFunc/Odom/OdomTracking.h"
+#include "AutoInclude.h"
 #include <cmath>
 #include <algorithm>
 

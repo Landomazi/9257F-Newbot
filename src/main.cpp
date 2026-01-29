@@ -8,9 +8,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "vex.h"
-#include "Auton/AutoSelector.h"
-#include "Auton/AutonRoutes/ElimsAuto.h"
-#include "Auton/AutonRoutes/QualsAuto.h"
+#include "AutoInclude.h"
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -47,25 +45,24 @@ void PreAuton(void) {
 /*---------------------------------------------------------------------------*/
 
 void Autonomous() {
-    // Use the selected options to run the correct autonomous
-    if (SelectedAutonMode == Skills) {
-        AutonomousSkills();
-    } else if (SelectedMatchType == Match) {
-        if (SelectedAutoSide == LeftSide) {
-          AutonomousLeft();
-        } else if (SelectedAutoSide == RightSide) {
-            AutonomousRight();
-        } else if (SelectedAutoSide == AWPoint) {
-            AWP();
-        }
-    } else if (SelectedMatchType == Elims) {
-        if (SelectedElimsSide == ELeft) {
-            ElimsLeft();
-        } else if (SelectedElimsSide == ERight) {
-          ElimsRight();
-        }
+  // Use the selected options to run the correct autonomous
+  if (SelectedAutonMode == Skills) {
+    AutonomousSkills();
+  } else if (SelectedMatchType == Match) {
+    if (SelectedAutoSide == LeftSide) {
+      AutonomousLeft();
+    } else if (SelectedAutoSide == RightSide) {
+      AutonomousRight();
+    } else if (SelectedAutoSide == AWPoint) {
+      AWP();
     }
-
+  } else if (SelectedMatchType == Elims) {
+    if (SelectedElimsSide == ELeft) {
+      ElimsLeft();
+    } else if (SelectedElimsSide == ERight) {
+      ElimsRight();
+    }
+  }
 }
 
 /*---------------------------------------------------------------------------*/
@@ -82,8 +79,8 @@ void UserControlDebug() {
     TopIntake.setVelocity(100, vex::percent);
     BottomIntake.setVelocity(100, vex::percent);
 
-    bool MogoMechEngaged = false;
-    bool MogoMechPosition = false;
+    bool DescoreEngaged = false;
+    bool DescorePosition = false;
     bool LilWillEngaged = false;
     bool LilWillPosition = false;
 
@@ -104,6 +101,9 @@ void UserControlDebug() {
         bool Left = Controller1.ButtonLeft.pressing();
         bool Right = Controller1.ButtonRight.pressing();
         bool Y = Controller1.ButtonY.pressing();
+        bool X = Controller1.ButtonX.pressing();
+        bool A = Controller1.ButtonA.pressing();
+        bool B = Controller1.ButtonB.pressing();
 
         // --- Motor commands ---
         double LeftPower = L3;
@@ -139,12 +139,13 @@ void UserControlDebug() {
     }
 
     // descore  mechanism
-    if( Y && !MogoMechEngaged) {
-      MogoMechPosition = !MogoMechPosition;
-      goalPiston.set(MogoMechPosition);
+    if( Y && !DescoreEngaged) {
+      DescorePosition = !DescorePosition;
+      goalPiston.set(DescorePosition);
     }
-      MogoMechEngaged = Y;
-      if( Right && !LilWillEngaged) {
+    DescoreEngaged = Y;
+    
+    if( Right && !LilWillEngaged) {
       LilWillPosition = !LilWillPosition;
       lilWill.set(LilWillPosition);
     }
@@ -155,13 +156,11 @@ void UserControlDebug() {
     BigBrain.Screen.setCursor(1,1);
     BigBrain.Screen.print("Drive L: %.1f  R: %.1f", LeftPower, RightPower);
     BigBrain.Screen.newLine();
-    BigBrain.Screen.print("Intake R1:%d R2:%d L1:%d", R1, R2, L1);
+    BigBrain.Screen.print("Intake R1:%d R2:%d L1:%d L2:%d", R1, R2, L1, L2);
     BigBrain.Screen.newLine();
-    BigBrain.Screen.print(" L3:bumbers%.1f R3:%.1f L4:%.1f R4:%.1f", L3, R3, L4, R4);
+    BigBrain.Screen.print("Descore position:%d", DescorePosition);
     BigBrain.Screen.newLine();
-    BigBrain.Screen.print("Mogo engaged:%d  position:%d", MogoMechEngaged, MogoMechPosition);
-    BigBrain.Screen.newLine();
-    BigBrain.Screen.print("LilWIll engaged:%d  position:%d", LilWillEngaged, LilWillPosition);
+    BigBrain.Screen.print("LilWIll position:%d", LilWillPosition);
     BigBrain.Screen.newLine();
     BigBrain.Screen.print("headings position1:%d  position2:%d", InertialSensor1.heading(), InertialSensor2.heading());
     wait(50, vex::msec); // update every 50ms

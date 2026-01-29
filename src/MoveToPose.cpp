@@ -1,8 +1,6 @@
 #include "vex.h"
 #include "Configure.h"
-#include "Auton/AutonFunc/Odom/OdomTracking.h"
-#include "InertialHeading.h"
-#include "Auton/AutonFunc/Odom/AngWrap.h"
+#include "AutoInclude.h"
 #include <cmath>
 
 // Move to a target pose using odometry
@@ -23,8 +21,8 @@ void MoveToPoseOdom(double targetX, double targetY, double targetTheta, double m
         double targetAngle = atan2(deltaY, deltaX) * 180.0 / M_PI;
 
         // Angular error relative to robot heading
-        double errorHeading = angleWrap(targetAngle - globalTheta);
-        double errorTheta = angleWrap(targetTheta - globalTheta);
+        double errorHeading = angleWrap(targetAngle - globalHeading);
+        double errorTheta = angleWrap(targetTheta - globalHeading);
 
         // Stop if close enough to pose
         if(distance < 1.0 && fabs(errorTheta) < 2.0) break;

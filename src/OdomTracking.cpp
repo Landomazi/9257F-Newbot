@@ -19,9 +19,7 @@ double lastDriveDeg = 0.0;
 double lastXPodDeg = 0.0;
 double lastHeading = 0.0;
 
-// ================================
-// ROBOT CONSTANTS (TUNE THESE)
-// ================================
+// ROBOT CONSTANTS
 const double DriveWheelDiameter = 3.25;
 const double DriveWheelCircumference = DriveWheelDiameter * M_PI;
 
@@ -38,9 +36,7 @@ double robotLength = 14.0;
 // left is positive, right is negative
 double xPodOffset = 5.5;
 
-// ================================
 // Reset odom
-// ================================
 void ResetOdom(double startX = 0, double startY = 0, double startHeading = 0) {
   globalX = startX;
   globalY = startY;
@@ -48,7 +44,7 @@ void ResetOdom(double startX = 0, double startY = 0, double startHeading = 0) {
 
   LeftMotors.resetPosition();
   RightMotors.resetPosition();
-  Xpod.resetPosition();
+  Xpod.resetPosition();       
 
   lastDriveDeg = 0.0;
   lastXPodDeg = 0.0;
