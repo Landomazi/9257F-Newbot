@@ -1,3 +1,3 @@
 #pragma once
 
-void MoveToPointOdom(double targetX, double targetY, double maxSpeed, int timeout);
+void MoveToPoint(double targetX, double targetY, double maxSpeed, int timeout);

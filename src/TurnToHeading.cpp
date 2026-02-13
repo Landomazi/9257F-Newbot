@@ -5,7 +5,7 @@
 #include <cmath>
 
 // PID turn to an absolute heading
-void TurnToHeadingOdom(double targetTheta, double maxSpeed, int timeout) {
+void TurnToHeading( double TargetTheta, double MaxSpeed, int Timeout) {
     double kP = 2.0;
     double kI = 0.0;
     double kD = 0.2;
@@ -18,10 +18,10 @@ void TurnToHeadingOdom(double targetTheta, double maxSpeed, int timeout) {
     vex::timer t;
     t.reset();
 
-    while (t.time(vex::msec) < timeout) {
+    while (t.time(vex::msec) < Timeout) {
         UpdateOdom();  // update globalX, globalY, globalTheta
 
-        error = angleWrap(targetTheta - globalTheta);
+        error = angleWrap(TargetTheta - globalHeading);
 
         if (fabs(error) < 1.0) break;  // exit if close enough
 
@@ -32,8 +32,8 @@ void TurnToHeadingOdom(double targetTheta, double maxSpeed, int timeout) {
         double motorPower = kP * error + kI * integral + kD * derivative;
 
         // clamp speed
-        if (motorPower > maxSpeed) motorPower = maxSpeed;
-        if (motorPower < -maxSpeed) motorPower = -maxSpeed;
+        if (motorPower > MaxSpeed) motorPower = MaxSpeed;
+        if (motorPower < -MaxSpeed) motorPower = -MaxSpeed;
 
         LeftMotors.spin(vex::forward, motorPower, vex::pct);
         RightMotors.spin(vex::forward, -motorPower, vex::pct);

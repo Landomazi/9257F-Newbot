@@ -1,3 +1,3 @@
 #pragma once
 
-void TurnToHeadingOdom(double targetTheta, double maxSpeed, int timeout);
+void TurnToHeading(double targetTheta, double maxSpeed, int timeout);

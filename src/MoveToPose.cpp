@@ -4,7 +4,7 @@
 #include <cmath>
 
 // Move to a target pose using odometry
-void MoveToPoseOdom(double targetX, double targetY, double targetTheta, double maxSpeed, int timeout) {
+void MoveToPose(double targetX, double targetY, double targetTheta, double maxSpeed, int timeout) {
     double kP_linear = 0.8;
     double kP_angular = 2.0;
 
@@ -18,7 +18,7 @@ void MoveToPoseOdom(double targetX, double targetY, double targetTheta, double m
         double deltaX = targetX - globalX;
         double deltaY = targetY - globalY;
         double distance = sqrt(deltaX*deltaX + deltaY*deltaY);
-        double targetAngle = atan2(deltaY, deltaX) * 180.0 / M_PI;
+        double targetAngle = atan2(deltaX, deltaY) * 180.0 / M_PI;
 
         // Angular error relative to robot heading
         double errorHeading = angleWrap(targetAngle - globalHeading);

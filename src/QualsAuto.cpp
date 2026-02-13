@@ -17,12 +17,12 @@ DriveStraight(30,90);
 DriveStraight(-40,80);
 Turn(180,90);
 ResetOdom();
-MoveToPoseOdom(-10,20,-30,90,3000);
+MoveToPose(-10,20,-30,90,3000);
 }
 
 void AWP()
 {
-
+MoveToPoint(-24,34,70,10000);
 }
 
 void AutonomousRight()

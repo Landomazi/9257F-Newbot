@@ -31,7 +31,7 @@ void PreAuton(void) {
   BottomIntake.resetPosition();
   TopIntake.setVelocity(100, vex::percent);
   BottomIntake.setVelocity(100, vex::percent);
-  AutonSelector();
+  //AutonSelector();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -46,7 +46,7 @@ void PreAuton(void) {
 
 void Autonomous() {
   // Use the selected options to run the correct autonomous
-  if (SelectedAutonMode == Skills) {
+  /*if (SelectedAutonMode == Skills) {
     AutonomousSkills();
   } else if (SelectedMatchType == Match) {
     if (SelectedAutoSide == LeftSide) {
@@ -62,7 +62,8 @@ void Autonomous() {
     } else if (SelectedElimsSide == ERight) {
       ElimsRight();
     }
-  }
+  }*/
+ AWP();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -122,13 +123,13 @@ void UserControlDebug() {
       BottomIntake.spin(vex::reverse);
       IMPdouble.set(false);
       Double2.set(false);
-    } else if(L1) {
+    } else if(L2) {
       TopIntake.spin(vex::reverse);
       BottomIntake.spin(vex::reverse);
       IMPdouble.set(false);
       Double2.set(true);
     }
-    else if(L2) {
+    else if(L1) {
       TopIntake.spin(vex::reverse);
       BottomIntake.spin(vex::reverse);
       IMPdouble.set(true);
@@ -141,7 +142,7 @@ void UserControlDebug() {
     // descore  mechanism
     if( Y && !DescoreEngaged) {
       DescorePosition = !DescorePosition;
-      goalPiston.set(DescorePosition);
+      DescorePiston.set(DescorePosition);
     }
     DescoreEngaged = Y;
     

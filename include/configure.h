@@ -13,10 +13,10 @@ extern vex::inertial InertialSensor1;
 extern vex::inertial InertialSensor2;
 
 // Odometray tracking wheels
-extern vex::rotation Xpod;
+extern vex::rotation Ypod;
 
 // Pneumatics
-extern vex::pneumatics goalPiston;
+extern vex::pneumatics DescorePiston;
 extern vex::pneumatics lilWill;
 extern vex::pneumatics IMPdouble;
 extern vex::pneumatics Double2;

@@ -14,7 +14,7 @@ double radToDeg(double rad) {
   return rad * 180.0 / M_PI;
 }
 
-void TurnToPointOdom(double targetX, double targetY, double maxSpeed, int timeout) {
+void TurnToPoint(double targetX, double targetY, double maxSpeed, int timeout) {
   // PID values (you will tune these)
   double kP = 2.0;
   double kI = 0.0;
@@ -35,10 +35,10 @@ void TurnToPointOdom(double targetX, double targetY, double maxSpeed, int timeou
     // calculate target angle
     double deltaX = targetX - globalX;
     double deltaY = targetY - globalY;
-    double targetTheta = radToDeg(atan2(deltaY, deltaX));
+    double targetTheta = radToDeg(atan2(deltaX, deltaY));
 
     // calculate error
-    error = angleWrap(targetTheta - globalTheta);
+    error = angleWrap(targetTheta - globalHeading);
 
     // exit condition
     if (fabs(error) < 1.0) break;

@@ -13,10 +13,10 @@ vex::inertial InertialSensor1 = vex::inertial(vex::PORT15);
 vex::inertial InertialSensor2 = vex::inertial(vex::PORT16);
 
 //Odometray tracking wheel
-vex::rotation Xpod = vex::rotation(vex::PORT1);
+vex::rotation Ypod = vex::rotation(vex::PORT1, false);
 
 // Pneumatics
-vex::pneumatics goalPiston = vex::pneumatics(BigBrain.ThreeWirePort.G);
+vex::pneumatics DescorePiston = vex::pneumatics(BigBrain.ThreeWirePort.G);
 vex::pneumatics lilWill = vex::pneumatics(BigBrain.ThreeWirePort.C);
 vex::pneumatics IMPdouble = vex::pneumatics(BigBrain.ThreeWirePort.A);
 vex::pneumatics Double2 = vex::pneumatics(BigBrain.ThreeWirePort.E);

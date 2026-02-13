@@ -3,9 +3,8 @@
 #include "InertialHeading.h"
 
 // ================================
-// FULL 2D ODOMETRY
-// IMEs = forward
-// X Pod = sideways
+// ODOMETRY WITH ONE FORWARD POD
+// Y Pod = forward/backward
 // Inertial = heading
 // ================================
 
@@ -15,86 +14,66 @@ double globalY = 0.0;
 double globalHeading = 0.0;
 
 // Last sensor values
-double lastDriveDeg = 0.0;
-double lastXPodDeg = 0.0;
+double lastYPodDeg = 0.0;
 double lastHeading = 0.0;
+double headingOffset = 0.0;
 
-// ROBOT CONSTANTS
-const double DriveWheelDiameter = 3.25;
-const double DriveWheelCircumference = DriveWheelDiameter * M_PI;
-
+// Tracking wheel constants
 const double TrackingWheelDiameter = 2.0;
 const double TrackingWheelCircumference = TrackingWheelDiameter * M_PI;
 
-// Distance between left and right drive wheels (inches)
-double trackWidth = 12.0;
+// Forward pod lateral offset from robot center (inches).
+// Right side positive, left side negative.
+double yPodOffset = 0.1;
 
-// Front to back robot length (inches)
-double robotLength = 14.0;
-
-// X pod offset from robot center (inches)
-// left is positive, right is negative
-double xPodOffset = 5.5;
+static double wrapDeg(double angle) {
+  while (angle > 180.0) angle -= 360.0;
+  while (angle < -180.0) angle += 360.0;
+  return angle;
+}
 
 // Reset odom
-void ResetOdom(double startX = 0, double startY = 0, double startHeading = 0) {
+void ResetOdom(double startX = 0, double startY = 0, double 
+  
+  
+  
+  startHeading = 0) {
   globalX = startX;
   globalY = startY;
+
+  Ypod.resetPosition();
+
+  // Align field heading to whichever inertial reading mode BotFacing() returns.
+  headingOffset = startHeading - BotFacing();
   globalHeading = startHeading;
 
-  LeftMotors.resetPosition();
-  RightMotors.resetPosition();
-  Xpod.resetPosition();       
-
-  lastDriveDeg = 0.0;
-  lastXPodDeg = 0.0;
+  lastYPodDeg = Ypod.position(vex::rotationUnits::deg);
   lastHeading = startHeading;
 }
 
-// ================================
-// Update odom
-// Call every 10 to 20 ms
-// ================================
 void UpdateOdom() {
-  // ----- FORWARD TRACKING (IMEs) -----
-  double leftDeg = LeftMotors.position(vex::rotationUnits::deg);
-  double rightDeg = RightMotors.position(vex::rotationUnits::deg);
-  double avgDeg = (leftDeg + rightDeg) / 2.0;
+  
+  double yPodDeg = Ypod.position(vex::rotationUnits::deg);
+  double yDeltaDeg = yPodDeg - lastYPodDeg;
+  lastYPodDeg = yPodDeg;
 
-  double driveDeltaDeg = avgDeg - lastDriveDeg;
-  lastDriveDeg = avgDeg;
+  double forwardInches = (yDeltaDeg / 360.0) * TrackingWheelCircumference;
 
-  double forwardInches =
-    (driveDeltaDeg / 360.0) * DriveWheelCircumference;
-
-  // ----- SIDEWAYS TRACKING (X POD) -----
-  double xPodDeg = Xpod.position(vex::rotationUnits::deg);
-  double xDeltaDeg = xPodDeg - lastXPodDeg;
-  lastXPodDeg = xPodDeg;
-
-  double sidewaysInches =
-    (xDeltaDeg / 360.0) * TrackingWheelCircumference;
-
-  // ----- HEADING -----
-  double newHeading = BotFacing();
+  double newHeading = BotFacing() + headingOffset;
   double deltaHeadingDeg = newHeading - lastHeading;
+  deltaHeadingDeg = wrapDeg(deltaHeadingDeg);
   double deltaHeadingRad = deltaHeadingDeg * M_PI / 180.0;
 
   // ----- ROTATION COMPENSATION -----
-  // X pod moves during turns because it is offset
-  double xRotationComp = deltaHeadingRad * xPodOffset;
-  sidewaysInches -= xRotationComp;
+  double yRotationComp = deltaHeadingRad * yPodOffset;
+  forwardInches -= yRotationComp;
 
   // ----- AVERAGE HEADING -----
-  double avgHeadingRad =
-    (newHeading + lastHeading) / 2.0 * M_PI / 180.0;
+  double avgHeadingRad = (lastHeading + deltaHeadingDeg / 2.0) * M_PI / 180.0;
 
   // ----- GLOBAL POSITION UPDATE -----
-  globalX += forwardInches * sin(avgHeadingRad)
-           + sidewaysInches * cos(avgHeadingRad);
-
-  globalY += forwardInches * cos(avgHeadingRad)
-           - sidewaysInches * sin(avgHeadingRad);
+  globalX += forwardInches * sin(avgHeadingRad);
+  globalY += forwardInches * cos(avgHeadingRad);
 
   lastHeading = newHeading;
   globalHeading = newHeading;
