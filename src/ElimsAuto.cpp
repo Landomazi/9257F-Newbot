@@ -6,22 +6,27 @@ void ElimsRight(void){
 }
 
 void ElimsLeft(void){
-Intake.spin(vex::reverse);
-MoveToPoint(-11,25,90,3000);
-lilWill.set(true);
-MoveToPoint(-35,0,90,3000);
-Turn(180,90);
-IMPdouble.set(false);
-MoveToPoint(-35,-14,20,3000);
-wait(750, vex::msec);
-Intake.spin(vex::forward);
-DriveStraight(-40,90);
-wait(500, vex::msec);
-Intake.stop();
-Intake.spin(vex::forward);
-IMPdouble.set(true);
-Double2.set(false);
-Intake.spin(vex::reverse);
-wait(1000, vex::msec);
-Intake.stop();
+    Intake.spin(vex::reverse);
+    MoveToPoint(-11,26,90,3000);
+    Intake.stop();
+    lilWill.set(true);
+    MoveToPoint(-35.1,0,100,3000);
+    Turn(180,90);
+    DriveStraight(-25,85);
+    Intake.spin(vex::forward);
+    IMPdouble.set(true);
+    wait(50, vex::msec);
+    Intake.spin(vex::reverse);
+    wait(1300, vex::msec);
+    IMPdouble.set(false);
+    DriveStraight(40,80);
+    wait(200, vex::msec);
+    DriveStraight(-20,90);
+    Intake.stop();
+    Turn(180,90);
+    DriveStraight(-20,90);
+    Intake.spin(vex::forward);
+    wait(50, vex::msec);
+    IMPdouble.set(true);
+    Intake.spin(vex::reverse);
 }

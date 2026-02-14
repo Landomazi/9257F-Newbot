@@ -4,7 +4,7 @@
 
 //davin is stupid
 void Turn(double targetAngle, double maxSpeed) {
-  double kP = 0.62; //strength of reaction to error
+  double kP = 0.59; //strength of reaction to error
   double kI = 0.001; // helps whit error calcuclation
   double kD = 0.95; //rate of slowing down as it gets closer to target
 

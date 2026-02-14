@@ -4,7 +4,7 @@
 void DriveStraight(double TargetMovement, double maxSpeed) {
   double kP = 3;
   double kI = 0.001;
-  double kD = 5;
+  double kD = 5.43;
 
   double error = 0;
   double prevError = 0;
@@ -51,7 +51,7 @@ void DriveStraight(double TargetMovement, double maxSpeed) {
 
     prevError = error;
 
-    if (fabs(error) < 1.5 || t.time(vex::sec) > 3) {
+    if (fabs(error) < 1.5 || t.time(vex::sec) > 1.2) {
       break;
     }
 
