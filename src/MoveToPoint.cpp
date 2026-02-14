@@ -8,14 +8,15 @@
 
 void MoveToPoint(double targetX, double targetY, double maxSpeed, int timeout) {
     // Linear (forward)
-    double kP_linear = 3.2;
-    double kD_linear = 0.8;
+    double kP_linear = 2.2;
+    double kD_linear = 0.35;
 
     // Angular (turning)
-    double kP_angular = 0.2;
-    double kD_angular = 0.8;
+    double kP_angular = 0.425;
+    double kD_angular = 1.273;
 
-
+    const double minDrivePower = 6.0;
+    const double minTurnPower = 4.0;
 
     double error_linear = 0;
     double last_error_linear = 0;
@@ -23,6 +24,7 @@ void MoveToPoint(double targetX, double targetY, double maxSpeed, int timeout) {
     double error_angular = 0;
     double last_error_angular = 0;
     bool driveBackward = false;
+    int debugCounter = 0;
 
     vex::timer t;
     t.reset();
@@ -37,12 +39,8 @@ void MoveToPoint(double targetX, double targetY, double maxSpeed, int timeout) {
         double targetTheta = atan2(deltaX, deltaY) * 180.0 / M_PI;
 
 
-        double headingRad = globalHeading * M_PI / 180.0;
-
-        error_linear = deltaX * (-sin(headingRad)) + deltaY * (-cos(headingRad));
-
         double headingError = angleWrap(targetTheta - globalHeading);
-        if (distance < 0.3) break;
+        if (distance < 0.6) break;
 
         // Use hysteresis so reverse/forward mode does not chatter near 90 deg.
         if (!driveBackward && fabs(headingError) > 100.0) {
@@ -52,12 +50,14 @@ void MoveToPoint(double targetX, double targetY, double maxSpeed, int timeout) {
         }
 
         error_angular = driveBackward ? angleWrap(headingError + 180.0) : headingError;
+        double errorAngularRad = error_angular * M_PI / 180.0;
+        error_linear = distance * cos(errorAngularRad);
         if (driveBackward) {
             error_linear = -error_linear;
         }
 
-double derivative_linear = error_linear - last_error_linear;
-double derivative_angular = angleWrap(error_angular - last_error_angular);
+        double derivative_linear = error_linear - last_error_linear;
+        double derivative_angular = angleWrap(error_angular - last_error_angular);
         last_error_linear = error_linear;
         last_error_angular = error_angular;
 
@@ -69,12 +69,24 @@ double derivative_angular = angleWrap(error_angular - last_error_angular);
         double turnPower =
             (kP_angular * error_angular) +
             (kD_angular * derivative_angular);
-        double turnScale = clamp((distance - 0.6) / 2.0, 0.0, 1.0);
-        turnPower *= turnScale;
 
+        // Reduce forward command when badly misaligned so the bot can turn-in first.
+        double headingScale = clamp(cos(errorAngularRad), 0.12, 1.0);
+        forwardPower *= headingScale;
+        if (fabs(error_angular) > 30.0) {
+            double maxForwardWhileTurning = maxSpeed * 0.45;
+            forwardPower = clamp(forwardPower, -maxForwardWhileTurning, maxForwardWhileTurning);
+        }
+
+        if (fabs(forwardPower) < minDrivePower && fabs(error_linear) > 1.0) {
+            forwardPower = (forwardPower >= 0.0) ? minDrivePower : -minDrivePower;
+        }
+        if (fabs(turnPower) < minTurnPower && fabs(error_angular) > 2.0) {
+            turnPower = (turnPower >= 0.0) ? minTurnPower : -minTurnPower;
+        }
 
         forwardPower = clamp(forwardPower, -maxSpeed, maxSpeed);
-        turnPower = clamp(turnPower, -maxSpeed, maxSpeed);
+        turnPower = clamp(turnPower, -maxSpeed * 0.9, maxSpeed * 0.9);
 
         double leftPower = forwardPower + turnPower;
         double rightPower = forwardPower - turnPower;
@@ -85,17 +97,17 @@ double derivative_angular = angleWrap(error_angular - last_error_angular);
             rightPower /= ratio;
         }
 
-        LeftMotors.spin(vex::forward, -leftPower, vex::pct);
-        RightMotors.spin(vex::forward, -rightPower, vex::pct);
+        LeftMotors.spin(vex::forward, leftPower, vex::pct);
+        RightMotors.spin(vex::forward, rightPower, vex::pct);
 
         vex::task::sleep(10);
-        std::cout << error_angular << " error angular  " << error_linear << " error Linear  " << "\n";
-        std::cout << "y: " << globalY << " x: " << globalX << "\n";
+        if ((debugCounter++ % 10) == 0) {
+            std::cout << error_angular << " error angular  "
+                      << error_linear << " error Linear  "
+                      << "dist: " << distance << "\n";
+            std::cout << "y: " << globalY << " x: " << globalX << "\n";
+        }
     }
-    std::cout << "Done\n";
-    std::cout << "Done\n";
-    std::cout << "Done\n";
-    std::cout << "Done\n";
     std::cout << "Done\n";
 
     LeftMotors.stop(vex::brake);

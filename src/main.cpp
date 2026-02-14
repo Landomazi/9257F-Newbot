@@ -118,18 +118,18 @@ void UserControlDebug() {
     if(R2) {
       TopIntake.spin(vex::forward);
       BottomIntake.spin(vex::forward);
-    } else if(R1) {
+    } else if(R1) { // blocking
       TopIntake.spin(vex::reverse);
       BottomIntake.spin(vex::reverse);
       IMPdouble.set(false);
       Double2.set(false);
-    } else if(L2) {
+    } else if(L2) { //middle goal
       TopIntake.spin(vex::reverse);
       BottomIntake.spin(vex::reverse);
       IMPdouble.set(false);
       Double2.set(true);
     }
-    else if(L1) {
+    else if(L1) { //highgoal
       TopIntake.spin(vex::reverse);
       BottomIntake.spin(vex::reverse);
       IMPdouble.set(true);
