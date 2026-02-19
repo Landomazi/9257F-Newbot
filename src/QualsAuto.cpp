@@ -11,12 +11,15 @@
 #include "AutoInclude.h"
 void AutonomousSkills()
 {
-DriveStraight(-5,30);
-lilWill.set(true);
-Intake.spin(vex::reverse);
-wait(500, vex::msec);
-DriveStraight(44,80);
-lilWill.set(false);
+    /*DriveStraight(-5,30);
+    lilWill.set(true);
+    Intake.spin(vex::reverse);
+    wait(500, vex::msec);
+    DriveStraight(44,80);
+    lilWill.set(false);*/
+    MoveToPoint(-30,20,100,2000);
+    Turn(30,90);
+    MoveToPoint(0,29,100,2000);
 }
 
 void AWP()

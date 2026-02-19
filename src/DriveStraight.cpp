@@ -1,5 +1,6 @@
 #include "vex.h"
 #include "Configure.h"
+#include "AutoInclude.h"
 
 void DriveStraight(double TargetMovement, double maxSpeed) {
   double kP = 3;
@@ -21,6 +22,7 @@ void DriveStraight(double TargetMovement, double maxSpeed) {
   t.reset();
 
   while (true) {
+    UpdateOdom();
     double avgDegrees =
       (LeftMotors.position(vex::degrees) + RightMotors.position(vex::degrees)) / 2.0;
 

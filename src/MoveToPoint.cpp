@@ -6,14 +6,14 @@
 #include <algorithm>
 #include <iostream>
 
-void MoveToPoint(double targetX, double targetY, double maxSpeed, int timeout) {
-    // Linear (forward)
-    double kP_linear = 1.1;
-    double kD_linear = 2.5;
+void MoveToPoint(double targetY, double targetX, double maxSpeed, int timeout) {
+    //KP and KD
+    double kP_linear = 2.1;
+    double kD_linear = 2.4;
 
-    // Angular (turning)
-    double kP_angular = 0.385;
-    double kD_angular = 1.2;
+    double kP_angular = .385;
+    double kD_angular = 1;
+
 
     const double minDrivePower = 6.0;
     const double minTurnPower = 4.0;
@@ -37,7 +37,7 @@ void MoveToPoint(double targetX, double targetY, double maxSpeed, int timeout) {
         double distance = sqrt(deltaX * deltaX + deltaY * deltaY);
 
         // FIXED atan2 order
-        double targetTheta = atan2(deltaX, deltaY) * 180.0 / M_PI;
+        double targetTheta = atan2(deltaY, deltaX) * 180.0 / M_PI;
 
         double headingError = angleWrap(targetTheta - globalHeading);
 
@@ -103,6 +103,10 @@ void MoveToPoint(double targetX, double targetY, double maxSpeed, int timeout) {
         RightMotors.spin(vex::forward, rightPower, vex::pct);
 
         vex::this_thread::sleep_for(10);
+        std::cout << "Global X: " << globalX 
+                  << " GlobalY: " << globalY 
+                  << " Global Heading: " << globalHeading 
+                  << "\n";
     }
 
     LeftMotors.stop(vex::brake);

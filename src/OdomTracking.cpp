@@ -35,8 +35,6 @@ static double wrapDeg(double angle) {
 // Reset odom
 void ResetOdom(double startX = 0, double startY = 0, double 
   
-  
-  
   startHeading = 0) {
   globalX = startX;
   globalY = startY;
@@ -72,8 +70,9 @@ void UpdateOdom() {
   double avgHeadingRad = (lastHeading + deltaHeadingDeg / 2.0) * M_PI / 180.0;
 
   // ----- GLOBAL POSITION UPDATE -----
-  globalX += forwardInches * sin(avgHeadingRad);
-  globalY += forwardInches * cos(avgHeadingRad);
+  globalX += forwardInches * cos(avgHeadingRad);
+  globalY += forwardInches * sin(avgHeadingRad);
+
 
   lastHeading = newHeading;
   globalHeading = newHeading;

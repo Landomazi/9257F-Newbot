@@ -1,6 +1,7 @@
 #include "vex.h"
 #include "Configure.h"
 #include "InertialHeading.h"
+#include "AutoInclude.h"
 
 //davin is stupid
 void Turn(double targetAngle, double maxSpeed) {
@@ -18,6 +19,7 @@ void Turn(double targetAngle, double maxSpeed) {
   t.reset();   
 
   while (true) { //everything in this loop we constaly be running and calculating
+    UpdateOdom();
     double currentAngle = BotFacing(); //sets cuurent angle to be equivent to botfacing
     error = targetAngle - currentAngle; // calculates how far it needs to turn to get closer to the angle
 
