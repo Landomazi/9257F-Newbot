@@ -63,7 +63,7 @@ void Autonomous() {
       ElimsRight();
     }
   }*/
- AutonomousSkills();
+  ElimsRight();
 }
 
 /*---------------------------------------------------------------------------*/

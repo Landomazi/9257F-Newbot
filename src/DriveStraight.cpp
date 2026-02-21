@@ -53,7 +53,7 @@ void DriveStraight(double TargetMovement, double maxSpeed) {
 
     prevError = error;
 
-    if (fabs(error) < 1.5 || t.time(vex::sec) > 1.2) {
+    if (fabs(error) <0.5 || t.time(vex::sec) > 1.4) {
       break;
     }
 

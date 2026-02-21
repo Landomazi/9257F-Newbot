@@ -33,9 +33,7 @@ static double wrapDeg(double angle) {
 }
 
 // Reset odom
-void ResetOdom(double startX = 0, double startY = 0, double 
-  
-  startHeading = 0) {
+void ResetOdom(double startX = 0, double startY = 0, double startHeading = 0) {
   globalX = startX;
   globalY = startY;
 

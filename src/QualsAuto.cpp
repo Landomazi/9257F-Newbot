@@ -17,14 +17,69 @@ void AutonomousSkills()
     wait(500, vex::msec);
     DriveStraight(44,80);
     lilWill.set(false);*/
-    MoveToPoint(-30,20,100,2000);
-    Turn(30,90);
-    MoveToPoint(0,29,100,2000);
+    Intake.spin(vex::reverse);
+    MoveToPoint(-23.5, 24.5, 100, 2000);
+    Turn(-135,100);
+    Intake.stop();
+    MoveToPoint(-50, 0, 100, 2000);
+    Turn(180,100);
+    DriveStraight(-26,80);
+    IMPdouble.set(true);
+    Intake.spin(vex::reverse);
+    wait(1500, vex::msec);
+    IMPdouble.set(false);
+    MoveToPoint(-49, 10, 100, 3000);
+    Turn(180,100);
+    lilWill.set(true);
+    DriveStraight(27,30);
+    wait(800, vex::msec);
+    DriveStraight(3,30);
+    wait(1000, vex::msec);
+    Intake.stop();
+    DriveStraight(-40,80);
+    Intake.spin(vex::reverse);
+    IMPdouble.set(true);
+    wait(1500, vex::msec);
+    lilWill.set(false);
+    DriveStraight(15,90);
+    Turn(0,90);
+    ResetOdom();
+    wait(1000, vex::msec);
+    Turn(90,90);
+    Intake.stop();
+    MoveToPoint(70, 23.2, 100, 5000);
+    Turn(135,90);
+    Intake.stop();
+    MoveToPoint(95.5, 0, 100, 3000);
+    Turn(180,90);
+    DriveStraight(-24,80);
+    IMPdouble.set(true);
+    Intake.spin(vex::reverse);
+    wait(1500, vex::msec);
+    IMPdouble.set(false);
+    DriveStraight(15,80);
+    lilWill.set(true);
+    DriveStraight(27,30);
+    wait(800, vex::msec);
+    DriveStraight(2,30);
+    wait(500, vex::msec);
+    Intake.stop();
+    DriveStraight(-40,80);
+    Intake.spin(vex::reverse);
+    IMPdouble.set(true);
+    wait(1500, vex::msec);
+    lilWill.set(false);
+    MoveToPoint(75, -14, 100, 3000);
+    Turn(-90,90);
+    MoveToPoint(65, -20, 100, 3000);
+    wait(750, vex::msec);
+    lilWill.set(true);
+    DriveStraight(40,70);
 }
 
 void AWP()
 {
-    DriveStraight(10,50);
+
 }
 
 
@@ -57,28 +112,23 @@ void AutonomousRight()
 
 void AutonomousLeft()
 {
-Intake.spin(vex::reverse);
-MoveToPoint(-10,25.2,90,3000);
-Intake.stop();
-Turn(-135,85);
-DriveStraight(-23.9,30);
-IMPdouble.set(false);
-Double2.set(true);
-Intake.setVelocity(80, vex::percent);
-Intake.spin(vex::reverse);
-wait(1450, vex::msec);
-DriveStraight(69, 90);
-Double2.set(false);
-lilWill.set(true);
-Turn(180,90);
-DriveStraight(30,30);
-wait(175, vex::msec);
-DriveStraight(-20,90);
-Intake.stop();
-Turn(180,90);
-DriveStraight(-20,90);
-Intake.spin(vex::forward);
-IMPdouble.set(true);
-Intake.setVelocity(90, vex::percent);
-Intake.spin(vex::reverse);
+    Intake.spin(vex::reverse);
+    MoveToPoint(-11,26,100,2000);
+    Turn(-135,100);
+    MoveToPoint(-34,0, 100, 2000);
+    Intake.stop();
+    Turn(180,100);
+    DriveStraight(-27,100);
+    IMPdouble.set(true);
+    Intake.spin(vex::reverse);
+    wait(1300, vex::msec);
+    IMPdouble.set(false);
+    DriveStraight(15,100);
+    lilWill.set(true);
+    DriveStraight(25.5, 30);
+    wait(165, vex::msec);
+    Intake.stop();
+    DriveStraight(-40,100);
+    IMPdouble.set(true);
+    Intake.spin(vex::reverse);
 }

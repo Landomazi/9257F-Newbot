@@ -41,7 +41,7 @@ void MoveToPoint(double targetY, double targetX, double maxSpeed, int timeout) {
 
         double headingError = angleWrap(targetTheta - globalHeading);
 
-        if (distance < 0.6) break;
+        if (distance < 0.4) break;
 
         // UPDATE ERRORS FIRST
         error_linear = distance;
