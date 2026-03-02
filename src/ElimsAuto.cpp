@@ -4,9 +4,9 @@
 
 void ElimsRight(void){
     Intake.spin(vex::reverse);
-    MoveToPoint(11,26,100,2000);
+    MoveToPoint(11,26,100,2000, true);
     Turn(135,100);
-    MoveToPoint(34,0, 100, 2000);
+    MoveToPoint(34,0, 100, 2000, true);
     Intake.stop();
     Turn(180,100);
     DriveStraight(-27,100);
@@ -26,9 +26,9 @@ void ElimsRight(void){
 
 void ElimsLeft(void){
     Intake.spin(vex::reverse);
-    MoveToPoint(-11,26,100,2000);
+    MoveToPoint(-11,26,100,2000, true);
     Turn(-135,100);
-    MoveToPoint(-34,0, 100, 2000);
+    MoveToPoint(-34,0, 100, 2000, true);
     Intake.stop();
     Turn(180,100);
     DriveStraight(-27,100);

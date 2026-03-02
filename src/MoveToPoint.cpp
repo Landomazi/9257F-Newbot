@@ -6,13 +6,13 @@
 #include <algorithm>
 #include <iostream>
 
-void MoveToPoint(double targetY, double targetX, double maxSpeed, int timeout) {
+void MoveToPoint(double targetY, double targetX, double maxSpeed, int timeout, bool DriveDirection) {
     //KP and KD
     double kP_linear = 2.1;
     double kD_linear = 2.4;
 
-    double kP_angular = .385;
-    double kD_angular = 1;
+    double kP_angular = .365;
+    double kD_angular = .893;
 
 
     const double minDrivePower = 6.0;
@@ -39,12 +39,15 @@ void MoveToPoint(double targetY, double targetX, double maxSpeed, int timeout) {
         // FIXED atan2 order
         double targetTheta = atan2(deltaY, deltaX) * 180.0 / M_PI;
 
-        double headingError = angleWrap(targetTheta - globalHeading);
+        if (!DriveDirection) {
+            targetTheta = angleWrap(targetTheta + 180.0);
+        }
 
-        if (distance < 0.4) break;
+        double headingError = angleWrap(targetTheta - globalHeading);
+        if (distance < 0.2) break;
 
         // UPDATE ERRORS FIRST
-        error_linear = distance;
+        error_linear = DriveDirection ? distance : -distance;
         error_angular = headingError;
 
         double derivative_linear = (error_linear - last_error_linear);

@@ -24,7 +24,7 @@ const double TrackingWheelCircumference = TrackingWheelDiameter * M_PI;
 
 // Forward pod lateral offset from robot center (inches).
 // Right side positive, left side negative.
-double yPodOffset = 0.1;
+double yPodOffset = 0;
 
 static double wrapDeg(double angle) {
   while (angle > 180.0) angle -= 360.0;

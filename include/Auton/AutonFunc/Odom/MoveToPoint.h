@@ -1,3 +1,3 @@
 #pragma once
 
-void MoveToPoint(double targetX, double targetY, double maxSpeed, int timeout);
+void MoveToPoint(double targetX, double targetY, double maxSpeed, int timeout, bool DriveDirection);
