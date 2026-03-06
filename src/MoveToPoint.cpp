@@ -2,23 +2,19 @@
 #include "Configure.h"
 #include "InertialHeading.h"
 #include "AutoInclude.h"
-#include <cmath>
-#include <algorithm>
 #include <iostream>
 
-void MoveToPoint(double targetY, double targetX, double maxSpeed, int timeout, bool DriveDirection) {
+
+void MoveToPoint(double targetY, double targetX, double maxSpeed, int timeout) {
     //KP and KD
-    
     double kP_linear = 2.1;
-    double kD_linear = 2.7;
+    double kD_linear = 2.4;
 
-    //double kP_angular = .65;
-    //double kD_angular = .907;
-    double kP_angular = .38;
-    double kD_angular = .6;
+    double kP_angular = .385;
+    double kD_angular = 1;
 
 
-    const double minDrivePower = 1.0;
+    const double minDrivePower = 6.0;
     const double minTurnPower = 4.0;
 
     double error_linear = 0;
@@ -39,17 +35,21 @@ void MoveToPoint(double targetY, double targetX, double maxSpeed, int timeout, b
 
         double distance = sqrt(deltaX * deltaX + deltaY * deltaY);
 
+        double adjustedMaxSpeed = maxSpeed;
+
+    if(distance < 8.0){
+        adjustedMaxSpeed = maxSpeed * 0.30;
+    }
+
+        // FIXED atan2 order
         double targetTheta = atan2(deltaY, deltaX) * 180.0 / M_PI;
 
-        if (!DriveDirection) {
-            targetTheta = angleWrap(targetTheta + 180.0);
-        }
-
         double headingError = angleWrap(targetTheta - globalHeading);
-        if (distance < .6 && fabs(error_angular) < 3.0) break;
+
+        if (distance < 0.4) break;
 
         // UPDATE ERRORS FIRST
-        error_linear = DriveDirection ? distance : -distance;
+        error_linear = distance;
         error_angular = headingError;
 
         double derivative_linear = (error_linear - last_error_linear);
@@ -89,25 +89,15 @@ void MoveToPoint(double targetY, double targetX, double maxSpeed, int timeout, b
             turnPower = (turnPower >= 0.0)
                 ? minTurnPower : -minTurnPower;
         }
-        // SLOW DOWN ZONE
-        if (distance < 4.0) {
 
-            // Scale max speed down as we approach target
-            double slowCap = maxSpeed * (distance / 4.0);
-
-            // Prevent it from getting too tiny
-            slowCap = std::max(slowCap, 8.0);
-
-            forwardPower = clamp(forwardPower, -slowCap, slowCap);
-        }
-        
-        turnPower = clamp(turnPower, -maxSpeed * 0.9, maxSpeed * 0.9);
+        forwardPower = clamp(forwardPower, -adjustedMaxSpeed, adjustedMaxSpeed);
+        turnPower = clamp(turnPower, -adjustedMaxSpeed * 0.9, adjustedMaxSpeed * 0.9);
 
         double leftPower = forwardPower + turnPower;
         double rightPower = forwardPower - turnPower;
 
         double ratio =
-            std::max(fabs(leftPower), fabs(rightPower)) / maxSpeed;
+            max(fabs(leftPower), fabs(rightPower)) / adjustedMaxSpeed;
 
         if (ratio > 1.0) {
             leftPower /= ratio;
