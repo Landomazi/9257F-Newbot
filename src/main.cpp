@@ -27,6 +27,7 @@ void PreAuton(void) {
   InertialSensor2.calibrate();
   InertialSensor1.resetHeading();
   InertialSensor2.resetHeading();
+  Ypod.resetPosition();
   TopIntake.resetPosition();
   BottomIntake.resetPosition();
   TopIntake.setVelocity(100, vex::percent);
@@ -123,13 +124,13 @@ void UserControlDebug() {
       BottomIntake.spin(vex::reverse);
       IMPdouble.set(false);
       Double2.set(false);
-    } else if(L2) { //middle goal
+    } else if(L1) { //middle goal
       TopIntake.spin(vex::reverse);
       BottomIntake.spin(vex::reverse);
       IMPdouble.set(false);
       Double2.set(true);
     }
-    else if(L1) { //highgoal
+    else if(L2) { //highgoal
       TopIntake.spin(vex::reverse);
       BottomIntake.spin(vex::reverse);
       IMPdouble.set(true);

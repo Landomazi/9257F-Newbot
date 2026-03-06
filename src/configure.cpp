@@ -26,7 +26,7 @@ vex::motor TopIntake = vex::motor(vex::PORT17, vex::ratio18_1, false);
 vex::motor BottomIntake = vex::motor(vex::PORT14, vex::ratio18_1, true);
 vex::motor_group Intake = vex::motor_group(TopIntake, BottomIntake);
 
-// Right motors
+// Right motorsx
 vex::motor RightFront = vex::motor(vex::PORT20, vex::ratio6_1, false);
 vex::motor RightMid = vex::motor(vex::PORT19, vex::ratio6_1, false);
 vex::motor RightBack = vex::motor(vex::PORT18, vex::ratio6_1, false);

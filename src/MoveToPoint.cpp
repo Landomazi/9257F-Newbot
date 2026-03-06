@@ -8,14 +8,17 @@
 
 void MoveToPoint(double targetY, double targetX, double maxSpeed, int timeout, bool DriveDirection) {
     //KP and KD
+    
     double kP_linear = 2.1;
-    double kD_linear = 2.4;
+    double kD_linear = 2.7;
 
-    double kP_angular = .365;
-    double kD_angular = .893;
+    //double kP_angular = .65;
+    //double kD_angular = .907;
+    double kP_angular = .38;
+    double kD_angular = .6;
 
 
-    const double minDrivePower = 6.0;
+    const double minDrivePower = 1.0;
     const double minTurnPower = 4.0;
 
     double error_linear = 0;
@@ -36,7 +39,6 @@ void MoveToPoint(double targetY, double targetX, double maxSpeed, int timeout, b
 
         double distance = sqrt(deltaX * deltaX + deltaY * deltaY);
 
-        // FIXED atan2 order
         double targetTheta = atan2(deltaY, deltaX) * 180.0 / M_PI;
 
         if (!DriveDirection) {
@@ -44,7 +46,7 @@ void MoveToPoint(double targetY, double targetX, double maxSpeed, int timeout, b
         }
 
         double headingError = angleWrap(targetTheta - globalHeading);
-        if (distance < 0.2) break;
+        if (distance < .6 && fabs(error_angular) < 3.0) break;
 
         // UPDATE ERRORS FIRST
         error_linear = DriveDirection ? distance : -distance;
@@ -87,8 +89,18 @@ void MoveToPoint(double targetY, double targetX, double maxSpeed, int timeout, b
             turnPower = (turnPower >= 0.0)
                 ? minTurnPower : -minTurnPower;
         }
+        // SLOW DOWN ZONE
+        if (distance < 4.0) {
 
-        forwardPower = clamp(forwardPower, -maxSpeed, maxSpeed);
+            // Scale max speed down as we approach target
+            double slowCap = maxSpeed * (distance / 4.0);
+
+            // Prevent it from getting too tiny
+            slowCap = std::max(slowCap, 8.0);
+
+            forwardPower = clamp(forwardPower, -slowCap, slowCap);
+        }
+        
         turnPower = clamp(turnPower, -maxSpeed * 0.9, maxSpeed * 0.9);
 
         double leftPower = forwardPower + turnPower;

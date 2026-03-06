@@ -1,11 +1,14 @@
 #include "vex.h"
 #include "Configure.h"
 #include "AutoInclude.h"
+#include "InertialHeading.h"
 
 void DriveStraight(double TargetMovement, double maxSpeed) {
-  double kP = 3;
+  double kP = 2.59;
   double kI = 0.001;
-  double kD = 5.43;
+  double kD = 3.78;
+
+  double kP_heading = 0.583;
 
   double error = 0;
   double prevError = 0;
@@ -14,6 +17,8 @@ void DriveStraight(double TargetMovement, double maxSpeed) {
 
   double wheelDiameter = 3.25;
   double wheelCircumference = wheelDiameter * M_PI;
+
+  double TargetHeading = BotFacing();
 
   LeftMotors.resetPosition();
   RightMotors.resetPosition();
@@ -30,6 +35,13 @@ void DriveStraight(double TargetMovement, double maxSpeed) {
       (avgDegrees / 360.0) * wheelCircumference;
 
     error = TargetMovement - CurrentPosition;
+
+    double headingError = TargetHeading - BotFacing();
+    // wrap to -180 to 180
+    if (headingError > 180) headingError -= 360;
+    if (headingError < -180) headingError += 360;
+
+    double turnCorrection = headingError * kP_heading;
 
     if (fabs(error) < 8)
       integral += error;
@@ -48,18 +60,28 @@ void DriveStraight(double TargetMovement, double maxSpeed) {
       moveSpeed = (moveSpeed > 0) ? 8 : -8;
     }
 
-    LeftMotors.spin(vex::forward, moveSpeed, vex::percent);
-    RightMotors.spin(vex::forward, moveSpeed, vex::percent);
+    if (fabs(error) < 10) {
+    moveSpeed = clamp(moveSpeed, -25.0, 20.5);
+    }
+
+    double leftSpeed = moveSpeed + turnCorrection;
+    double rightSpeed = moveSpeed - turnCorrection;
+
+    leftSpeed = clamp(leftSpeed, -maxSpeed, maxSpeed);
+    rightSpeed = clamp(rightSpeed, -maxSpeed, maxSpeed);
+
+    LeftMotors.spin(vex::forward, leftSpeed, vex::percent);
+    RightMotors.spin(vex::forward, rightSpeed, vex::percent);
 
     prevError = error;
 
-    if (fabs(error) <0.5 || t.time(vex::sec) > 1.4) {
+    if (fabs(error) < 0.3 || t.time(vex::sec) > 3) {
       break;
     }
 
     vex::wait(20, vex::msec);
   }
 
-  LeftMotors.stop(vex::brake);
-  RightMotors.stop(vex::brake);
+  LeftMotors.stop(vex::coast);
+  RightMotors.stop(vex::coast);
 }

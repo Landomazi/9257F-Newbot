@@ -5,9 +5,9 @@
 
 //davin is stupid
 void Turn(double targetAngle, double maxSpeed) {
-  double kP = 0.59; //strength of reaction to error
+  double kP = 0.567; //strength of reaction to error
   double kI = 0.001; // helps whit error calcuclation
-  double kD = 0.95; //rate of slowing down as it gets closer to target
+  double kD = 0.884; //rate of slowing down as it gets closer to target
 
   double error; //how far off of the target angle
   double prevError = 0; //how far off it use to be from target angle
@@ -50,7 +50,7 @@ void Turn(double targetAngle, double maxSpeed) {
     prevError = error; //when the loop gets down here it sets the previous error to the error and then resets
     //the error after movement recalculates
 
-    if ((fabs(error) < 1 && fabs(derivative) < 0.5) || t.time(vex::sec) > 3) {
+    if ((fabs(error) < 0.9 && fabs(derivative) < 0.5) || t.time(vex::sec) > 0.95) {
       break;
     }// basically saying if it is off target by 1 degree and that it is taking longer than three seconds then the 
     //code ends and the turn will not
